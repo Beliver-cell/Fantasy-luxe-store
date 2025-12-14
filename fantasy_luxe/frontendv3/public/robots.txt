@@ -1,0 +1,103 @@
+# Fantasy Luxe - Premium Fashion & Luxury Shopping
+# https://fantasyluxe.com
+# Last updated: 2025
+
+User-agent: *
+Allow: /
+Allow: /collections
+Allow: /products/
+Allow: /about
+Allow: /contact
+Disallow: /cart
+Disallow: /login
+Disallow: /place-order
+Disallow: /verify
+Disallow: /verify-email
+Disallow: /reset-password
+Disallow: /orders
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://fantasyluxe.com/sitemap.xml
+
+# Search Engine Bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# AI Crawlers - Enabled for maximum visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Social Media Crawlers
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Pinterest
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# E-commerce and Shopping Bots
+User-agent: Googlebot-Shopping
+Allow: /
+
+User-agent: PriceSpider
+Allow: /

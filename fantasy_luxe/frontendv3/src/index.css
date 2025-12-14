@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Prata&display=swap");
+@import "tailwindcss";
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --primary-color: #0066ff;
+  --secondary-color: #f0f0f0;
+  --border-color: #e0e0e0;
+  --card-bg: #ffffff;
+  --link-color: #0066cc;
+}
+
+.darkmode {
+  --bg-color: #121212;
+  --text-color: #f0f0f0;
+  --primary-color: #4dabf7;
+  --secondary-color: #1e1e1e;
+  --border-color: #444;
+  --card-bg: #1a1a1a;
+  --link-color: #81d4fa
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+a.active hr {
+  display: block;
+}
+
+* {
+  font-family: Outfit;
+}
+
+.prata-regular {
+  font-family: "Prata", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  a.active {
+    background-color: black;
+    color: white;
+  }
+}
+
+/* Chatbot Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chatbot-message {
+  animation: slideUp 0.3s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.chatbot-btn:hover {
+  animation: bounce 0.5s ease-in-out;
+}
+
