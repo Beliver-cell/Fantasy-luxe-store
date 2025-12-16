@@ -9,7 +9,7 @@ import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRoute.js'
 import cartRouter from './routes/cartRoute.js'
 import orderRouter from './routes/orderRoute.js'
-import { initializeAdmin } from './controllers/userController.js'
+// Admin automatic initialization removed
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -19,7 +19,6 @@ app.set('trust proxy', 1);
 
 const startServer = async () => {
     await connectDB();
-    await initializeAdmin();
     connectCloudinary();
 }
 startServer();

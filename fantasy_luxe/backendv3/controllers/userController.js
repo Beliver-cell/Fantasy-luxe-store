@@ -1,6 +1,6 @@
 import userModel from "../models/userModel.js";
 import validator from 'validator';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { generateOTP, sendVerificationOTP, sendResetPasswordOTP } from "../config/email.js";
 
@@ -15,10 +15,6 @@ const getJwtSecret = () => {
 
 const createToken = (id, role = 'user') => {
     return jwt.sign({ id, role }, getJwtSecret(), { expiresIn: '7d' })
-}
-
-const createAdminToken = (id) => {
-    return jwt.sign({ id, role: 'admin' }, getJwtSecret(), { expiresIn: '1d' })
 }
 
 // Route for user login
@@ -236,80 +232,8 @@ const resetPassword = async (req, res) => {
     }
 }
 
-// Route for admin login
-const adminLogin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        
-        if (!email || !password) {
-            return res.json({ success: false, message: "Email and password are required" });
-        }
+// Admin login removed: admin UI goes straight to dashboard without a login endpoint
 
-        const user = await userModel.findOne({ email, role: 'admin' });
-        
-        if (!user) {
-            return res.json({ success: false, message: "Admin account not found" });
-        }
+// Admin automatic initialization removed (admin login removed)
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        
-        if (!isMatch) {
-            return res.json({ success: false, message: "Invalid password" });
-        }
-
-        const token = createAdminToken(user._id);
-        res.json({ success: true, token });
-    }
-    catch (error) {
-        console.error('Admin login error:', error);
-        res.json({ success: false, message: error.message });
-    }
-}
-
-// Initialize admin account from environment variables
-const initializeAdmin = async () => {
-    try {
-        const adminEmail = process.env.ADMIN_EMAIL;
-        const adminPassword = process.env.ADMIN_PASSWORD;
-
-        if (!adminEmail || !adminPassword) {
-            console.log('Admin credentials not configured in environment variables');
-            return;
-        }
-
-        const existingAdmin = await userModel.findOne({ email: adminEmail });
-        
-        if (existingAdmin) {
-            if (existingAdmin.role !== 'admin') {
-                existingAdmin.role = 'admin';
-                existingAdmin.isVerified = true;
-                await existingAdmin.save();
-                console.log('Existing user upgraded to admin role');
-            }
-            return;
-        }
-
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(adminPassword, salt);
-
-        const adminUser = new userModel({
-            name: 'Admin',
-            email: adminEmail,
-            password: hashedPassword,
-            role: 'admin',
-            isVerified: true
-        });
-
-        await adminUser.save();
-        console.log('Admin account created successfully');
-    }
-    catch (error) {
-        if (error.code === 11000) {
-            console.log('Admin email already exists');
-        } else {
-            console.error('Error initializing admin:', error.message);
-        }
-    }
-}
-
-export { loginUser, registerUser, verifyEmail, resendVerificationOTP, forgotPassword, resetPassword, adminLogin, initializeAdmin };
+export { loginUser, registerUser, verifyEmail, resendVerificationOTP, forgotPassword, resetPassword };
