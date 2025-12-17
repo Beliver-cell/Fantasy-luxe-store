@@ -9,7 +9,7 @@ import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRoute.js'
 import cartRouter from './routes/cartRoute.js'
 import orderRouter from './routes/orderRoute.js'
-// Admin automatic initialization removed
+import categoryRouter from './routes/categoryRoute.js'
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -116,6 +116,7 @@ app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
+app.use('/api/category', categoryRouter);
 
 app.get('/', (req, res) => {
   res.json({ 
