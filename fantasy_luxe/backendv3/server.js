@@ -12,7 +12,7 @@ import orderRouter from './routes/orderRoute.js'
 // Admin automatic initialization removed
 
 const app = express()
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 8000
 
 // Trust proxy for Replit environment (needed for rate limiting)
 app.set('trust proxy', 1);
@@ -70,7 +70,9 @@ const getAllowedOrigins = () => {
     'http://localhost:5000',
     'http://0.0.0.0:5000',
     'http://localhost:5173',
-    'http://0.0.0.0:5173'
+    'http://0.0.0.0:5173',
+    'http://localhost:8000',
+    'http://0.0.0.0:8000'
   ];
   
   if (process.env.CORS_ORIGIN) {
