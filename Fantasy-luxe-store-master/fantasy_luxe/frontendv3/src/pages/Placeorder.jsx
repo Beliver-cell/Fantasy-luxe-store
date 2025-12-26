@@ -26,6 +26,7 @@ const Placeorder = () => {
     setCartItems,
     totalcartAmount,
     deliveryFee,
+    getEffectiveDeliveryFee,
     products,
   } = useContext(ShopContext);
 
@@ -63,7 +64,7 @@ const Placeorder = () => {
       let orderData = {
         address: formData,
         items: orderItems,
-        amount: totalcartAmount() + deliveryFee,
+        amount: (totalcartAmount() + getEffectiveDeliveryFee()) * 100, // Convert Naira to kobo for Flutterwave
       };
 
       const responseFlutterwave = await axios.post(backendUrl + '/api/order/flutterwave', orderData, { headers: { token } });

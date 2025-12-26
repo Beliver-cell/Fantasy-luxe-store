@@ -8,8 +8,9 @@ export const ShopContext = createContext();
 
 //creating context-provider
 export const ShopContextProvider = ({ children }) => {
-  const currency = "$";
-  const deliveryFee = 10;
+  const currency = "₦";
+  const [deliveryFee, setDeliveryFee] = useState(500); // Default fallback
+  const [freeDeliveryThreshold, setFreeDeliveryThreshold] = useState(10000); // Default fallback
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
@@ -95,9 +96,10 @@ export const ShopContextProvider = ({ children }) => {
     }
   };
 
-  const totalcartAmount = () => {
-    let totalAmount = 0;
-    for (const items in cartItems) {
+  const getEffectiveDeliveryFee = () => {
+    const subtotal = totalcartAmount();
+    return subtotal >= freeDeliveryThreshold ? 0 : deliveryFee;
+  };
       let itemInfo = products.find((products) => products._id === items);
 
       for (const item in cartItems[items]) {
@@ -143,8 +145,22 @@ export const ShopContextProvider = ({ children }) => {
     }
   };
 
+  const getSettings = async () => {
+    try {
+      const response = await axios.get(backendUrl + "/api/settings/get");
+      if (response.data.success) {
+        setDeliveryFee(response.data.settings.deliveryFee);
+        setFreeDeliveryThreshold(response.data.settings.freeDeliveryThreshold);
+      }
+    } catch (error) {
+      // Use default delivery fee if settings can't be fetched
+      console.log("Using default delivery fee");
+    }
+  };
+
   useEffect(() => {
     getProductsData();
+    getSettings();
   }, []);
 
 
@@ -158,6 +174,8 @@ export const ShopContextProvider = ({ children }) => {
   const value = {
     products,
     deliveryFee,
+    freeDeliveryThreshold,
+    getEffectiveDeliveryFee,
     currency,
     search,
     setSearch,
