@@ -1,0 +1,16 @@
+# Fantasy Luxe - Premium Fashion & Luxury Shopping
+# https://fantasyluxe.store
+# Last updated: 2025
+
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /login
+Disallow: /place-order
+Disallow: /verify
+Disallow: /verify-email
+Disallow: /reset-password
+Disallow: /orders
+Disallow: /api/
+
+Sitemap: https://fantasyluxe.store/sitemap.xml

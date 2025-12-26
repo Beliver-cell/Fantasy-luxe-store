@@ -1,0 +1,175 @@
+NO-EXCUSES DEBUG & FIX PROMPT (USE EXACTLY)
+
+Act as a senior full-stack engineer responsible for production systems.
+My e-commerce website has critical admin failures.
+You must fix the root causes, not hide them behind error messages.
+
+CORE RULES (NON-NEGOTIABLE)
+
+Do NOT silence issues by adding alerts, toasts, console spam, or UI error messages
+
+Do NOT add temporary guards or fake success states
+
+If an error appears, eliminate the cause, not the message
+
+Final result must work with zero visible errors
+
+PROBLEMS
+1. PRODUCT CREATION (ADMIN)
+
+“Add Product” button does not trigger properly
+
+Product is NOT saved to database
+
+Product does NOT appear on frontend
+
+Admin currently sees error messages instead of working behavior
+
+2. CATEGORY MANAGEMENT (ADMIN)
+
+Admin cannot reliably:
+
+Create categories
+
+Delete categories
+
+Category updates do NOT sync immediately across admin + frontend
+
+REQUIRED ACTIONS (DO NOT SKIP)
+1. BUTTON & FORM FIX (ROOT CAUSE ONLY)
+
+Verify:
+
+Button uses type="submit"
+
+Button is inside a valid <form>
+
+onSubmit handler exists and executes
+
+Remove:
+
+Broken preventDefault() usage
+
+Disabled states blocking submission
+
+Invalid state bindings
+
+Ensure clicking always sends a request when form is valid
+
+2. FRONTEND → BACKEND PIPELINE
+
+Verify API endpoint:
+
+Exact URL
+
+POST method
+
+Correct request body
+
+Fix mismatches between:
+
+Frontend payload
+
+Backend expected schema
+
+Ensure request succeeds without triggering any frontend error UI
+
+3. BACKEND PRODUCT LOGIC
+
+Ensure backend:
+
+Receives request correctly
+
+Validates required fields properly
+
+Saves product successfully
+
+Remove:
+
+Over-strict validation causing false errors
+
+Silent failures
+
+Backend must return a clean success response
+
+4. DATABASE CONSISTENCY
+
+Verify product records are created
+
+Ensure:
+
+No required fields are null
+
+Schema matches frontend fields exactly
+
+Fix:
+
+Column / field mismatches
+
+Type conflicts
+
+5. FRONTEND PRODUCT DISPLAY
+
+Ensure frontend:
+
+Fetches products from correct endpoint
+
+Updates state immediately after product creation
+
+Re-renders without refresh
+
+No error messages should appear during normal flow
+
+CATEGORY MANAGEMENT (ADMIN-ONLY)
+
+Implement FULL CRUD, cleanly:
+
+Admin must:
+
+Create categories
+
+Delete categories
+
+Fetch categories
+
+Technical rules:
+
+Categories stored in database
+
+Products reference category by ID
+
+Deleting a category:
+
+Block deletion if products exist (safe default)
+
+No frontend errors allowed during category operations
+
+UI behavior:
+
+Category dropdown updates instantly
+
+Category list is admin-only
+
+No reload required
+
+FINAL VERIFICATION (MANDATORY)
+
+Perform these steps and confirm ALL pass:
+
+Add product from admin
+
+Product saves to database
+
+Product appears on frontend
+
+No error messages shown
+
+Create category → appears immediately
+
+Delete category → system remains stable
+
+Do NOT explain.
+Do NOT comment.
+Do NOT suggest alternatives.
+
+Fix the system until it works cleanly with zero visible errors.
