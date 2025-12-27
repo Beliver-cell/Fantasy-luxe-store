@@ -43,15 +43,6 @@ const Home = () => {
         </script>
       </Helmet>
       <div>
-        <div className="text-center py-8 px-4 bg-pink-50 text-gray-800">
-          <h1 className="text-2xl font-bold mb-3 md:text-3xl">Affordable Women Accessories in Nigeria</h1>
-          <p className="max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-            We are an online store selling affordable women accessories in Nigeria, including stylish women bags,
-            female wrist watches, and water bottles for women. Our goal is to make it easy to buy women bags online in Nigeria
-            at fair prices. Whether you’re looking for women handbag prices in Nigeria or ladies wrist watch prices,
-            we offer quality products with reliable nationwide delivery.
-          </p>
-        </div>
         <Hero />
         <Latescollection />
         <Bestseller />

@@ -16,9 +16,7 @@ const Latescollection = () => {
       <div className="text-center py-8 text-3xl">
         <Title text1={`LATEST`} text2={`COLLECTIONS`} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Experience the latest arrivals at Fantasy Luxe - where elegance meets contemporary style.
-          Browse our newest collection featuring this season's most sought-after pieces, 
-          hand-picked to keep you at the forefront of luxury fashion.
+          Experience the latest arrival at fantasy luxe- A fresh collection of beauty,accessories,and little luxuries you’ll love.Curated for soft girls with bold taste
         </p>
       </div>
       {/* Rendering products */}

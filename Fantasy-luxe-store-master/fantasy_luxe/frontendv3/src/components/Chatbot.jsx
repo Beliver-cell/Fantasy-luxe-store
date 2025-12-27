@@ -18,7 +18,11 @@ const Chatbot = () => {
     },
     'returns': {
       keywords: ['return', 'exchange', 'refund', 'wrong', 'damaged', 'back'],
-      response: 'We have an easy 7-day return and exchange policy! If you\'re not satisfied with your purchase or received a damaged item, simply contact us. We\'ll arrange a return and send a replacement or refund.'
+      response: 'Please refer to our terms and conditions for return policies. For assistance, contact us on WhatsApp: https://wa.me/1234567890'
+    },
+    'terms': {
+      keywords: ['terms', 'conditions', 'policy', 'rules'],
+      response: 'Our terms and conditions outline all policies including returns, shipping, and payments. For detailed information, contact us on WhatsApp: https://wa.me/1234567890'
     },
     'sizes': {
       keywords: ['size', 'fit', 'measurement', 'guide', 'sizing'],
@@ -38,7 +42,7 @@ const Chatbot = () => {
     },
     'contact': {
       keywords: ['contact', 'support', 'help', 'email', 'call', 'assistance'],
-      response: 'We\'re here to help! You can chat with us right here, or email us for detailed inquiries. Our team responds within 24 hours. Your satisfaction is our priority!'
+      response: 'We\'re here to help! You can chat with us right here, or contact us on WhatsApp for detailed inquiries: https://wa.me/1234567890. Our team responds within 24 hours. Your satisfaction is our priority!'
     }
   };
 
@@ -51,7 +55,7 @@ const Chatbot = () => {
       }
     }
     
-    return "I appreciate your question! 😊 For more specific inquiries, please visit our FAQ section or contact our support team. We typically respond within 24 hours. How else can I help?";
+    return "I appreciate your question! 😊 For more specific inquiries, please visit our FAQ section or contact our support team on WhatsApp: https://wa.me/1234567890. We typically respond within 24 hours. How else can I help?";
   };
 
   const handleSendMessage = () => {
@@ -95,12 +99,23 @@ const Chatbot = () => {
               <h3 className="font-bold text-lg">Fantasy Luxe Support</h3>
               <p className="text-xs text-gray-300">Always here to help 🎧</p>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-2xl hover:text-gray-300 transition"
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-2">
+              <a
+                href="https://wa.me/message/66VUVZGOMBD7F1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-400 hover:text-green-300 transition text-xl"
+                title="Contact on WhatsApp"
+              >
+                💬
+              </a>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-2xl hover:text-gray-300 transition"
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           {/* Messages */}
@@ -134,10 +149,10 @@ const Chatbot = () => {
                 Track Order
               </button>
               <button
-                onClick={() => handleQuickReply('What is your return policy?')}
+                onClick={() => handleQuickReply('What are your terms and conditions?')}
                 className="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition"
               >
-                Returns
+                Terms & Conditions
               </button>
               <button
                 onClick={() => handleQuickReply('How to pay safely?')}
@@ -145,6 +160,14 @@ const Chatbot = () => {
               >
                 Payment
               </button>
+              <a
+                href="https://wa.me/1234567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded transition flex items-center gap-1"
+              >
+                <span>💬</span> WhatsApp
+              </a>
             </div>
           </div>
 

@@ -250,7 +250,7 @@ const Product = () => {
                   <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
                     <p>100% Original product.</p>
                     <p>Secure payment with Flutterwave.</p>
-                    <p>Easy return and exchange policy within 7 days.</p>
+                    <p>Terms and conditions applied.</p>
                   </div>
                 </div>
               </div>

@@ -7,11 +7,6 @@ const Footer = () => {
       <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
         <div className="">
           <img src={assets.logo} alt="Fantasy Luxe logo" className="mb-5 w-32" />
-          <p className="w-full md:w-2/3 text-gray-600">
-            Discover the epitome of luxury at Fantasy Luxe. We bring you curated collections of premium fashion and accessories.
-            Our commitment to excellence and authenticity ensures that every piece meets the highest standards
-            of quality and style. Join us in experiencing the perfect blend of contemporary fashion and timeless elegance.
-          </p>
         </div>
 
         <div>

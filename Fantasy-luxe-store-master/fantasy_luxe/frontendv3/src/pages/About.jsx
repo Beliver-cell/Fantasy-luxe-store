@@ -58,23 +58,20 @@ const About = () => {
         />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600">
           <p>
-            Welcome to Fantasy Luxe, your premier destination for luxury fashion and accessories.
-            We pride ourselves on offering an exceptional shopping experience with carefully curated collections
-            that embody sophistication and elegance. Our commitment to excellence ensures that every piece
-            in our store meets the highest standards of quality and style.
+            Fantasy Luxe is a lifestyle brand created for girls who love beauty, softness, and effortless style. 
+           We believe luxury should feel good, look beautiful, and fit naturally into your everyday life.
           </p>
           <p>
-            At Fantasy Luxe, we believe in delivering excellence in every aspect of our service.
-            From personalized styling advice to seamless shopping experience, we go above and beyond
-            to ensure your satisfaction. Our team of fashion experts is dedicated to helping you
-            discover pieces that perfectly match your style and preferences.
+           From cluster lashes to chic accessories and carefully selected essentials, every piece in our collection is curated with intention.
+           At Fantasy Luxe, we celebrate femininity, elegance, and self-expression through the little details that make a big difference.
+           Our commitment to excellence ensures that every piece in our store meets the highest standard and quality.
           </p>
           <b className="text-gray-800">Our Mission</b>
           <p>
-            Experience the world of luxury fashion through our expertly curated collections.
-            Our mission is to bring you the finest selection of designer pieces, exclusive collaborations,
-            and trending styles. We strive to make high-end fashion accessible while maintaining
-            the exceptional quality that Fantasy Luxe is known for.
+            Our mission is to curate beautiful,high-quality beauty and lifestyle essentials
+            that help women feel confident, polished, and effortlessly stylish every day.
+            We aim to make soft luxury affordable and accessible through thoughtfully chosen
+           pieces that celebrate femininity, individuality, and self-expression.
           </p>
         </div>
       </div>

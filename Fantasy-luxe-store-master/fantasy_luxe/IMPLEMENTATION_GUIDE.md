@@ -100,7 +100,7 @@ VITE_BACKEND_URL=https://your-backend-domain.com
 ✓ Order tracking
 ✓ 24/7 AI chatbot support
 ✓ FAQ answers instantly
-✓ Easy returns within 7 days
+✓ Terms and conditions applied for returns
 ✓ Responsive design
 
 ### Admin Features
@@ -118,7 +118,7 @@ VITE_BACKEND_URL=https://your-backend-domain.com
 The chatbot automatically answers questions about:
 - **Payment**: How to pay with Paystack, secure transactions
 - **Shipping**: Delivery times, worldwide shipping, tracking
-- **Returns**: 7-day return policy, exchange process
+- **Returns**: Terms and conditions applied
 - **Sizing**: Size guides, fit recommendations
 - **Authenticity**: 100% authentic guarantee
 - **Orders**: Order status, tracking information
