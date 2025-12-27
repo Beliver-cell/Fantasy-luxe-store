@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backendv3/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "frontendv3/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "admin/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backendv3/server.js"
+    },
+    {
+      "src": "/admin-fantasy-luxe-panel-working/(.*)",
+      "dest": "/admin/dist/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontendv3/dist/$1"
+    }
+  ]
+}
