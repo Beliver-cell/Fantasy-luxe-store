@@ -26,8 +26,6 @@ const List = () => {
     fetchList()
   }, [])
 
-  console.log("Fetched Products:", list)
-
   const removeProduct = async (id) => {
     try {
       const token = localStorage.getItem('token');  // ✅ Fetch token

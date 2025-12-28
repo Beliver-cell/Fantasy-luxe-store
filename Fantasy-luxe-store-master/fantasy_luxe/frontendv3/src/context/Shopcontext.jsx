@@ -100,6 +100,11 @@ export const ShopContextProvider = ({ children }) => {
     const subtotal = totalcartAmount();
     return subtotal >= freeDeliveryThreshold ? 0 : deliveryFee;
   };
+
+  const totalcartAmount = () => {
+    let totalAmount = 0;
+
+    for (const items in cartItems) {
       let itemInfo = products.find((products) => products._id === items);
 
       for (const item in cartItems[items]) {
@@ -154,7 +159,6 @@ export const ShopContextProvider = ({ children }) => {
       }
     } catch (error) {
       // Use default delivery fee if settings can't be fetched
-      console.log("Using default delivery fee");
     }
   };
 
