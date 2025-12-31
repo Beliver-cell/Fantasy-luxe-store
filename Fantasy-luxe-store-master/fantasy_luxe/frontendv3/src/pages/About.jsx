@@ -52,9 +52,9 @@ const About = () => {
 
       <div className="my-10 flex flex-col md:flex-row gap-16">
         <img
-          className="w-full md:max-w-[450px] "
+          className="w-full md:max-w-[450px] rounded-xl object-cover shadow-lg"
           src={assets.about_img}
-          alt=""
+          alt="Fantasy Luxe Brand"
         />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600">
           <p>

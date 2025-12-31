@@ -17,7 +17,7 @@ export const ShopContextProvider = ({ children }) => {
   const [products, setProductData] = useState([]);
   const navigate = useNavigate();
   const [token, setToken] = useState("");
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
   const addToCart = async (itemId, size) => {
     if (!size) {

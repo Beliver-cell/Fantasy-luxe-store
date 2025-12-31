@@ -23,7 +23,13 @@ const Hero = () => {
       </div>
 
       {/* Hero Right-side */}
-      <img className="w-full sm:w-1/2" src={assets.myimg24} alt="hero" />
+      <div className="w-full sm:w-1/2 overflow-hidden">
+        <img 
+          className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 h-[300px] sm:h-[450px] lg:h-[550px]" 
+          src={assets.myimg24} 
+          alt="hero" 
+        />
+      </div>
     </div>
   );
 };
