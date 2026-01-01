@@ -10,15 +10,22 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Affordable Women Accessories in Nigeria | Bags, Watches & Bottles</title>
-        <meta name="description" content="Buy affordable women accessories in Nigeria. Shop women bags, female wrist watches, and water bottles for women. Trusted online store with nationwide delivery." />
-        <meta name="keywords" content="women bags in nigeria, ladies wrist watch price in nigeria, buy women bag online nigeria, affordable women accessories nigeria, women handbag price in nigeria, female wrist watch nigeria, water bottle for women nigeria, best women bags online nigeria, ladies accessories online nigeria, where to buy women accessories in nigeria" />
+        <title>Fantasy Luxe | Luxury Bags, Watches & Accessories</title>
+        <meta name="description" content="Shop the finest collection of luxury bags, watches, and accessories at Fantasy Luxe. Experience soft luxury and effortless style with our curated premium selections." />
+        <meta name="keywords" content="luxury fashion nigeria, designer bags, ladies watches, premium accessories, fantasy luxe home" />
         <link rel="canonical" href="https://fantasyluxe.store" />
 
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Affordable Women Accessories in Nigeria | Fantasy Luxe" />
-        <meta property="og:description" content="We are an online store selling affordable women accessories in Nigeria, including stylish women bags, female wrist watches, and water bottles for women." />
+        <meta property="og:title" content="Fantasy Luxe | Premium Luxury Fashion & Accessories" />
+        <meta property="og:description" content="Explore a world of soft luxury. From chic bags to elegant watches, discover premium accessories designed for those who love beauty and style." />
         <meta property="og:url" content="https://fantasyluxe.store" />
+        <meta property="og:image" content="https://fantasyluxe.store/logo.jpg" />
+        <meta property="og:site_name" content="Fantasy Luxe" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Fantasy Luxe | Premium Luxury Fashion & Accessories" />
+        <meta name="twitter:description" content="Discover premium bags, watches, and lifestyle essentials. Experience soft luxury with Fantasy Luxe." />
+        <meta name="twitter:image" content="https://fantasyluxe.store/logo.jpg" />
 
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,16 +35,12 @@ const Home = () => {
             "@context": "https://schema.org",
             "@type": "OnlineStore",
             "name": "Fantasy Luxe",
-            "description": "We are an online store selling affordable women accessories in Nigeria.",
+            "description": "Premium online store for luxury bags, watches, and fashion accessories in Nigeria.",
             "url": "https://fantasyluxe.store",
+            "logo": "https://fantasyluxe.store/logo.jpg",
             "address": {
               "@type": "PostalAddress",
               "addressCountry": "NG"
-            },
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "contactType": "Customer Support",
-              "areaServed": "NG"
             }
           })}
         </script>
