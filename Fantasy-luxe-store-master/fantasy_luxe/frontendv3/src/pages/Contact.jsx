@@ -52,7 +52,7 @@ const Contact = () => {
 
         <div className="my-10 flex flex-col justify-center md:flex-row gap-10 mb-28">
           <img
-            className="w-full md:max-w-[480px] rounded-xl object-cover shadow-lg"
+            className="w-full md:max-w-[400px] rounded-xl object-cover shadow-lg"
             src={assets.contact_img}
             alt="Contact us at Fantasy Luxe"
           />

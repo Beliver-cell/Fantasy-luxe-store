@@ -52,7 +52,7 @@ const About = () => {
 
       <div className="my-10 flex flex-col md:flex-row gap-16">
         <img
-          className="w-full md:max-w-[450px] rounded-xl object-cover shadow-lg"
+          className="w-full md:max-w-[380px] rounded-xl object-cover shadow-lg"
           src={assets.about_img}
           alt="Fantasy Luxe Brand"
         />
