@@ -1,0 +1,51 @@
+modules = ["nodejs-20", "web"]
+[agent]
+expertMode = true
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+MONGODB_URI = "mongodb+srv://techy3085_db_user:qfat48kX7tL7Dsef@cluster0.9zrigti.mongodb.net/?appName=Cluster0"
+JWT_SECRET = "e8d5a816911cf1d93450671afb6bba7a84f23e0f645e136cc21a82e0a7f4e0f2"
+PORT = "8000"
+NODE_ENV = "development"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Fantasy Luxe Store"
+
+[[workflows.workflow]]
+name = "Fantasy Luxe Store"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash start.sh"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 8000
+externalPort = 8000
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd Fantasy-luxe-store-main/backendv3 && node server.js & cd Fantasy-luxe-store-main/frontendv3 && npx serve -s dist -l 5000"]
+build = ["bash", "-c", "cd Fantasy-luxe-store-main/frontendv3 && npm run build"]

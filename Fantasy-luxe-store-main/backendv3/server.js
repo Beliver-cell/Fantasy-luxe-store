@@ -63,6 +63,11 @@ const corsOptions = {
       return callback(null, true);
     }
     
+    // Allow Replit domains
+    if (origin.includes('.replit.dev') || origin.includes('.repl.co') || origin.includes('.replit.app')) {
+      return callback(null, true);
+    }
+    
     // Allow any origin from FRONTEND_URL or CORS_ORIGIN env vars
     const frontendUrl = ENV.FRONTEND_URL || '';
     const corsOrigin = ENV.CORS_ORIGIN || '';
