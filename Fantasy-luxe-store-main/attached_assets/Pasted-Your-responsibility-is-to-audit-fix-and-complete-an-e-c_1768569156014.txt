@@ -1,0 +1,269 @@
+Your responsibility is to audit, fix, and complete an e-commerce platform so it is fully functional, mobile-first, visually correct, and production-ready.
+
+This is not a redesign.
+This is finish everything properly with zero broken flows.
+
+🚨 GLOBAL NON-NEGOTIABLE RULES
+
+❌ No dead buttons or dead pages
+
+❌ No fake success messages
+
+❌ No console errors shown to users
+
+❌ No missing images anywhere
+
+❌ No hardcoded URLs, ports, keys, or secrets
+
+❌ No desktop-only UI
+
+❌ No broken payment flows
+
+❌ No unfinished admin features
+
+If a feature exists in UI → it must work end-to-end.
+
+🧭 EXECUTION ORDER (FOLLOW STRICTLY)
+✅ STEP 1 — FULL MOBILE-FIRST UI AUDIT (ADMIN + FRONTEND)
+Fix responsiveness:
+
+Admin dashboard is not mobile-friendly → FIX
+
+Frontend is not mobile-friendly → FIX
+
+Ensure:
+
+All buttons are tappable
+
+Modals and forms fit small screens
+
+Navigation works on mobile
+
+No overflow or hidden actions
+
+✅ STEP 2 — ADMIN PRODUCT & COLLECTION MANAGEMENT (CRITICAL)
+Admin must be able to:
+
+Add product images (multiple if supported)
+
+Add product sizes:
+
+Examples: 41 inch, 31–45 inch, S, M, L
+
+Add product colors
+
+Add collections with images
+
+Assign:
+
+Category
+
+Subcategory
+
+You MUST:
+
+Fix admin UI forms
+
+Fix backend schema if required
+
+Ensure uploaded images are:
+
+stored correctly
+
+returned by APIs
+
+usable by frontend
+
+No unused inputs. No missing fields.
+
+✅ STEP 3 — IMAGE PIPELINE FIX (ADMIN → BACKEND → FRONTEND → HOME)
+
+🚨 THIS IS CRITICAL AND MUST NOT BE SKIPPED
+
+Current problem:
+
+Products or collections added by admin
+
+Text shows, but images do NOT appear on homepage or listings
+
+You MUST:
+
+Trace image upload flow:
+
+Admin upload → backend storage → API response → frontend render
+
+Fix:
+
+Broken image URLs
+
+Missing API fields
+
+Incorrect frontend mapping
+
+Ensure images display correctly on:
+
+Landing page
+
+Product listings
+
+Collection sections
+
+Product detail pages
+
+⚠️ No placeholders unless image is truly missing
+⚠️ No broken image icons
+
+✅ STEP 4 — COLLECTIONS, CATEGORIES & LANDING PAGE DISPLAY
+
+Collections must display:
+
+Image
+
+Category
+
+Subcategory
+
+Homepage must correctly render:
+
+Newly added products
+
+Newly added collections
+
+Fix any mismatch between admin data and frontend rendering
+
+✅ STEP 5 — AUTH, PROFILE & MOBILE UX FIXES
+Mobile profile issues:
+
+Profile icon on mobile must show:
+
+Profile
+
+Orders
+
+Logout
+
+Create a proper Profile Page:
+
+Users can save:
+
+Contact address
+
+Delivery address
+
+Address is stored in DB
+
+Auto-fills checkout address
+
+No repeated typing. No lost data.
+
+✅ STEP 6 — SEARCH FUNCTIONALITY (HOME PAGE)
+
+Fix search button:
+
+Must search products
+
+Must work from homepage
+
+Must return results or “No products found”
+
+No dummy UI.
+
+✅ STEP 7 — PAYMENT FLOW (FLUTTERWAVE — ZERO FAILURE)
+Current issue:
+
+Clicking Pay returns 401 Request Failed
+
+Flutterwave secret key exists in env
+
+You MUST:
+
+Trace why 401 occurs
+
+Ensure:
+
+Public key used on frontend
+
+Secret key used only on backend
+
+Payment verification works
+
+Confirm:
+
+Clicking Pay opens Flutterwave
+
+Successful payment creates order
+
+Failed payment shows clean error
+
+⚠️ Payment must never be a dead button
+⚠️ Orders must not be created before success
+
+✅ STEP 8 — ERROR HANDLING & USER EXPERIENCE
+
+Replace console errors with user-friendly messages:
+
+“Invalid email or password”
+
+“Payment failed, try again”
+
+“Network error”
+
+Server logs remain detailed
+
+Client messages remain clean
+
+✅ STEP 9 — DEAD END & BROKEN FLOW AUDIT
+
+You MUST:
+
+Click every button
+
+Submit every form
+
+Trigger every modal
+
+Fix:
+
+Dead buttons
+
+Broken links
+
+Missing API calls
+
+Fake loaders
+
+If it exists → it works.
+
+✅ STEP 10 — FINAL PRODUCTION & VERCEL READINESS
+
+Before completion:
+
+Backend must be Vercel-compatible
+
+No cron jobs
+
+No hardcoded ports
+
+Clean build & deploy
+
+Frontend deploys successfully
+
+Admin deploys successfully
+
+📦 FINAL DELIVERABLES REQUIRED
+
+List of all issues found
+
+What was fixed in admin
+
+What was fixed in frontend
+
+Confirmation images now display everywhere
+
+Payment flow proof
+
+Mobile UX confirmation
+
+Zero dead buttons confirmation
+
+Successful Vercel deployment confirmation

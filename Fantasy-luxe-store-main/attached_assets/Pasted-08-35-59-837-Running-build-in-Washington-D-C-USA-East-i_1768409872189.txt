@@ -1,0 +1,48 @@
+08:35:59.837 Running build in Washington, D.C., USA (East) – iad1
+08:35:59.838 Build machine configuration: 2 cores, 8 GB
+08:35:59.960 Cloning github.com/Beliver-cell/Fantasy-luxe-store (Branch: main, Commit: 207650d)
+08:35:59.961 Previous build caches not available.
+08:36:01.025 Cloning completed: 1.065s
+08:36:01.068 Found .vercelignore
+08:36:01.073 Removed 25 ignored files defined in .vercelignore
+08:36:01.073   /.git/config
+08:36:01.074   /.git/description
+08:36:01.074   /.git/FETCH_HEAD
+08:36:01.074   /.git/HEAD
+08:36:01.074   /.git/hooks/applypatch-msg.sample
+08:36:01.074   /.git/hooks/commit-msg.sample
+08:36:01.074   /.git/hooks/fsmonitor-watchman.sample
+08:36:01.074   /.git/hooks/post-update.sample
+08:36:01.074   /.git/hooks/pre-applypatch.sample
+08:36:01.074   /.git/hooks/pre-commit.sample
+08:36:01.443 Running "vercel build"
+08:36:01.861 Vercel CLI 50.1.6
+08:36:02.414 Installing dependencies...
+08:36:07.798 
+08:36:07.799 added 360 packages in 5s
+08:36:07.799 
+08:36:07.799 130 packages are looking for funding
+08:36:07.800   run `npm fund` for details
+08:36:07.843 Running "npm run build"
+08:36:07.978 
+08:36:07.979 > admin@0.0.0 build
+08:36:07.979 > vite build
+08:36:07.979 
+08:36:09.285 [36mvite v6.4.1 [32mbuilding for production...[36m[39m
+08:36:09.354 transforming...
+08:36:09.380 [32m✓[39m 3 modules transformed.
+08:36:09.381 [31m✗[39m Build failed in 60ms
+08:36:09.381 [31merror during build:
+08:36:09.382 [31m[@tailwindcss/vite:generate:build] Can't resolve 'tailwindcss' in '/vercel/path0/admin/src'[31m
+08:36:09.382 file: [36m/vercel/path0/admin/src/index.css[31m
+08:36:09.382     at finishWithoutResolve (/vercel/path0/admin/node_modules/enhanced-resolve/lib/Resolver.js:565:18)
+08:36:09.384     at /vercel/path0/admin/node_modules/enhanced-resolve/lib/Resolver.js:657:14
+08:36:09.384     at /vercel/path0/admin/node_modules/enhanced-resolve/lib/Resolver.js:718:5
+08:36:09.384     at eval (eval at create (/vercel/path0/admin/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+08:36:09.385     at /vercel/path0/admin/node_modules/enhanced-resolve/lib/Resolver.js:718:5
+08:36:09.385     at eval (eval at create (/vercel/path0/admin/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+08:36:09.385     at /vercel/path0/admin/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:89:43
+08:36:09.385     at /vercel/path0/admin/node_modules/enhanced-resolve/lib/Resolver.js:718:5
+08:36:09.385     at eval (eval at create (/vercel/path0/admin/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+08:36:09.386     at /vercel/path0/admin/node_modules/enhanced-resolve/lib/Resolver.js:718:5[39m
+08:36:09.405 Error: Command "npm run build" exited with 1

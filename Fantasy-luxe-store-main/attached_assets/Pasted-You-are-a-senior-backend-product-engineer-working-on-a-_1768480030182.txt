@@ -1,0 +1,137 @@
+You are a senior backend + product engineer working on a production e-commerce platform.
+
+The backend is now deployed and reachable.
+However, three critical features are broken or incomplete.
+
+Your task is to fix them correctly and professionally, without breaking existing logic.
+
+🚨 GLOBAL RULES
+
+❌ Do NOT hardcode secrets, emails, or API keys
+
+❌ Do NOT expose errors via console.log to users
+
+❌ Do NOT change database models unless required
+
+❌ Do NOT change UI design unless necessary for UX clarity
+
+❌ Do NOT break existing authentication or payment flows
+
+🎯 ISSUE 1 — OTP (Resend) NOT SENDING
+Current problem:
+
+OTP resend flow exists
+
+OTP is not being delivered to users
+
+You MUST:
+
+Identify why OTP is not being sent (logic, provider, env, timing, or route issue)
+
+Ensure OTP is:
+
+generated correctly
+
+stored securely (with expiry)
+
+resent using the configured email/SMS provider
+
+Add proper error handling and retries
+
+Return clear success/failure responses
+
+⚠️ Do NOT hardcode OTPs
+⚠️ Do NOT log OTPs to console
+
+🎯 ISSUE 2 — EMAIL SUBSCRIBE DOES NOT WORK
+Expected behavior:
+
+When a user enters their email and subscribes:
+
+Email is stored in the database for marketing
+
+User receives a confirmation email:
+
+Subject: Thanks for subscribing to Fantasy Luxe
+
+Body: professional, brand-aligned, welcoming message
+
+You MUST:
+
+Create or fix the subscribe endpoint
+
+Validate email properly
+
+Prevent duplicate subscriptions
+
+Store subscriber emails in a dedicated collection/table
+
+Send a transactional email using the configured email service
+
+Fail gracefully if email sending fails
+
+⚠️ No fake emails
+⚠️ No console-only behavior
+
+🎯 ISSUE 3 — BAD ERROR HANDLING (CONSOLE.LOG LEAKS)
+Current problem:
+
+On login or auth failure, errors are logged or leaked
+
+Users see technical or console-related errors
+
+You MUST:
+
+Replace all user-facing console.log or raw error messages
+
+Return clean, human-readable errors, e.g.:
+
+“Invalid email or password”
+
+“Account not found”
+
+“OTP expired”
+
+Requirements:
+
+Detailed errors → server logs only
+
+Clean messages → client responses
+
+Correct HTTP status codes (400, 401, 403)
+
+🧠 REQUIRED CHECKS
+
+Audit all auth, OTP, and subscribe flows
+
+Verify env variables for email/OTP services
+
+Ensure all async operations are awaited
+
+Ensure failures do not crash the server
+
+✅ FINAL VALIDATION (MANDATORY)
+
+You must verify:
+
+OTP resend sends real OTPs
+
+Subscription stores email + sends confirmation mail
+
+Login errors are clean and user-friendly
+
+No sensitive data is logged or exposed
+
+Existing flows remain intact
+
+📦 REQUIRED OUTPUT
+
+What was broken and why
+
+Files and functions changed
+
+How OTP sending now works
+
+Sample subscription email content
+
+Confirmation that console errors are no longer user-visible

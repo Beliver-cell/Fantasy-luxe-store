@@ -1,0 +1,91 @@
+You are a senior full-stack engineer specializing in Vercel serverless deployments.
+
+I have an application with:
+
+Backend deployed on Vercel
+
+Admin and frontend calling the API
+
+The problem:
+
+Admin requests return 405 Method Not Allowed
+
+This happens even though the backend is deployed and environment variables are correct
+
+Your task is to audit and fix the backend, ensuring all API requests from admin and frontend succeed, without changing business logic or database behavior.
+
+❌ RULES (DO NOT BREAK THESE)
+
+Do NOT change routes, controllers, or business logic
+
+Do NOT hardcode URLs, ports, or secrets
+
+Do NOT remove or modify payments, auth, or MongoDB logic
+
+Do NOT introduce cron jobs or background workers
+
+Do NOT guess — identify root cause of 405
+
+🧠 STEPS YOU MUST TAKE
+
+Audit API routes
+
+Check all backend routes
+
+Ensure they match HTTP methods (POST/GET/PUT/DELETE) expected by frontend and admin
+
+Identify any routes that reject requests (405)
+
+Verify Vercel serverless compatibility
+
+Ensure Express (if used) is exported correctly
+
+Remove any app.listen() calls
+
+Ensure backend uses serverless-safe connection handling (MongoDB connection cached properly)
+
+Check folder structure
+
+Confirm backend is inside /api/* or Vercel root path
+
+Update exports if needed for serverless functions
+
+Fix CORS & preflight
+
+Add proper handling for OPTIONS requests
+
+Ensure headers allow requests from admin and frontend domains
+
+Validate frontend URLs
+
+Check VITE_BACKEND_URL and admin API endpoints
+
+Ensure requests are hitting the correct backend path (/api/...)
+
+Test all endpoints
+
+Create a /api/health endpoint if missing
+
+Verify admin requests now succeed without 405
+
+✅ VALIDATION CHECKLIST
+
+✅ All admin requests succeed (no 405)
+
+✅ Frontend requests succeed
+
+✅ No business logic or API responses are changed
+
+✅ MongoDB and payments still work
+
+✅ Backend deploys cleanly on Vercel
+
+📦 OUTPUT REQUIRED
+
+List of routes that caused 405 and how they were fixed
+
+Backend files updated
+
+Proof of working admin requests (example request & response)
+
+Confirmation that frontend is unaffected

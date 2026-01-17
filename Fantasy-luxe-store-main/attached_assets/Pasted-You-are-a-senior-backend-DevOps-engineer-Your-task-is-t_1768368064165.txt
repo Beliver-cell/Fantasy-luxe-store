@@ -1,0 +1,141 @@
+You are a senior backend + DevOps engineer.
+Your task is to DEBUG, NOT GUESS.
+
+I have a Vercel-deployed backend that keeps throwing:
+
+Configuration Error (405): Check API endpoint
+
+This error persists even after environment variables are correctly set.
+
+🚨 ABSOLUTE RULES
+
+❌ Do NOT hardcode URLs, API keys, ports, or env values
+
+❌ Do NOT change business logic
+
+❌ Do NOT rewrite the app architecture
+
+❌ Do NOT add cron jobs or background workers
+
+❌ Do NOT “assume” the issue — PROVE IT
+
+❌ Do NOT touch frontend UI code unless required for API correctness
+
+🎯 YOUR MISSION
+
+Find the exact root cause of the 405 error and fix it so the backend works 100% on Vercel.
+
+🧠 YOU MUST DO ALL OF THE FOLLOWING
+1️⃣ Trace the 405 error to its SOURCE
+
+Identify which endpoint is returning 405
+
+Identify which HTTP method is being rejected
+
+Identify which file causes the rejection
+
+No guessing. Follow the request → route → handler.
+
+2️⃣ Verify Vercel serverless compatibility (CRITICAL)
+
+Check the backend for any of the following violations:
+
+app.listen() usage
+
+hardcoded ports
+
+Express app not exported
+
+Backend files outside /api/*
+
+Mixed Express + raw Node handlers
+
+If found, fix without changing logic.
+
+3️⃣ Validate API route structure
+
+Ensure:
+
+Every backend route lives in /api/
+
+Each API file exports a valid handler
+
+No conflicting rewrites or redirects exist
+
+4️⃣ HTTP METHOD CHECK (most common 405 cause)
+
+For every endpoint:
+
+Compare frontend request method vs backend handler
+
+Ensure POST/GET/PUT/DELETE match exactly
+
+Ensure backend explicitly supports required methods
+
+5️⃣ CORS & OPTIONS preflight handling
+
+Ensure OPTIONS requests do NOT return 405
+
+Fix CORS configuration properly
+
+Confirm headers allow frontend domain
+
+6️⃣ Environment variable verification
+
+Confirm backend reads env variables via process.env
+
+Confirm frontend reads via import.meta.env
+
+Ensure no fallback or hardcoded values exist
+
+7️⃣ vercel.json inspection
+
+Check for:
+
+method restrictions
+
+rewrites breaking /api
+
+legacy configs
+
+Fix only if necessary
+
+8️⃣ Create a health check endpoint
+
+If missing, add:
+
+GET /api/health
+→ { status: "ok" }
+
+
+Use it to confirm backend is reachable and not misconfigured.
+
+✅ FINAL VALIDATION (MANDATORY)
+
+You must confirm:
+
+/api/health returns 200
+
+All API endpoints respond correctly
+
+No 405 errors remain
+
+Backend works on Vercel without cron
+
+MongoDB connection is untouched and stable
+
+No logic was changed
+
+📦 REQUIRED OUTPUT
+
+Return:
+
+Exact root cause of the 405 error
+
+Exact file(s) and line(s) fixed
+
+Why the error happened
+
+Proof the fix works
+
+If the backend cannot work on Vercel without architectural change, clearly say so and explain why.

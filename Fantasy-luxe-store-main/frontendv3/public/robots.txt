@@ -1,0 +1,29 @@
+# Fantasy Luxe - Premium Fashion & Luxury Shopping
+# https://fantasyluxe.store
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /cart
+Disallow: /orders
+Disallow: /verify
+Disallow: /place-order
+
+# Sitemap
+Sitemap: https://fantasyluxe.store/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Allow AI bots for visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Applebot
+Allow: /
