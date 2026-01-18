@@ -181,9 +181,9 @@ export const ShopContextProvider = ({ children }) => {
       if (response.data.success) {
         const settingsDeliveryFee = response.data.settings.deliveryFee;
         // If undefined or null, default to 0. If it is 0, it stays 0.
-        setDeliveryFee(settingsDeliveryFee !== undefined && settingsDeliveryFee !== null ? settingsDeliveryFee : 0);
+        setDeliveryFee(settingsDeliveryFee !== undefined && settingsDeliveryFee !== null ? Number(settingsDeliveryFee) : 0);
         setFreeDeliveryEnabled(response.data.settings.freeDeliveryEnabled || false);
-        setFreeDeliveryThreshold(response.data.settings.freeDeliveryThreshold);
+        setFreeDeliveryThreshold(Number(response.data.settings.freeDeliveryThreshold) || 10000);
         
         if (response.data.settings.deliveryInfo) {
           setDeliveryInfo(response.data.settings.deliveryInfo);

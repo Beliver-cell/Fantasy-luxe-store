@@ -42,7 +42,7 @@ const CartTotal = () => {
           <b>Total</b>
           <b>
             {currency}{" "}
-            {(subtotal + effectiveDeliveryFee).toFixed(2)}
+            {(Number(subtotal) + Number(effectiveDeliveryFee)).toFixed(2)}
           </b>
         </div>
       </div>

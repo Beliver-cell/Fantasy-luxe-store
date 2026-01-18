@@ -1,4 +1,5 @@
 import settingsModel from '../models/settingsModel.js';
+import ENV from '../config/serverConfig.js';
 
 // Get current settings
 const getSettings = async (req, res) => {
@@ -6,10 +7,20 @@ const getSettings = async (req, res) => {
     let settings = await settingsModel.findOne();
     if (!settings) {
       // Create default settings if none exist
-      settings = new settingsModel();
+      settings = new settingsModel({
+        deliveryFee: ENV.DELIVERY_CHARGE,
+        currency: ENV.CURRENCY
+      });
       await settings.save();
     }
-    res.json({ success: true, settings });
+    
+    // Ensure critical fields have values even if missing in old DB documents
+    const settingsObj = settings.toObject();
+    if (settingsObj.deliveryFee === undefined || settingsObj.deliveryFee === null) {
+      settingsObj.deliveryFee = ENV.DELIVERY_CHARGE || 500;
+    }
+    
+    res.json({ success: true, settings: settingsObj });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }

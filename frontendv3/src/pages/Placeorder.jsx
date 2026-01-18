@@ -127,7 +127,7 @@ const Placeorder = () => {
       let orderData = {
         address: formData,
         items: orderItems,
-        amount: totalcartAmount() + getEffectiveDeliveryFee(), // Flutterwave expects major unit (Naira) for NGN
+        amount: Number(totalcartAmount()) + Number(getEffectiveDeliveryFee()), // Flutterwave expects major unit (Naira) for NGN
       };
 
       const responseFlutterwave = await axios.post(
