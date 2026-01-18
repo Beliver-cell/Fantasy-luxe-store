@@ -13,7 +13,10 @@ const connectDB = async() => {
     const mongoUri = ENV.MONGODB_URI;
     
     if (!mongoUri) {
-        throw new Error('MONGODB_URI is not defined in the configuration');
+        console.error('MONGODB_URI is not defined - Database connection will fail');
+        // Do not throw here if we want to allow server startup without DB (e.g. for health checks)
+        // throw new Error('MONGODB_URI is not defined in the configuration');
+        return;
     }
     
     try {

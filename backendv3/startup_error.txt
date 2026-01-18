@@ -1,0 +1,70 @@
+﻿node : file:///C:/Use
+rs/USER/Desktop/n/Fan
+tasy-luxe-store/backe
+ndv3/config/email.js:
+243
+At line:1 char:1
++ node server.js 
+2>&1 | Out-File 
+-FilePath 
+startup_error.txt 
+-Encoding  ...
++ ~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (file://   
+ /C:/User...ig/em    
+ail.js:243:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+  const htmlContent 
+= \
+                     
+ ^
+
+SyntaxError: Invalid 
+or unexpected token
+    at compileSourceT
+extModule (node:inter
+nal/modules/esm/utils
+:318:16)
+    at ModuleLoader.m
+oduleStrategy (node:i
+nternal/modules/esm/t
+ranslators:111:18)
+    at #translate (no
+de:internal/modules/e
+sm/loader:473:20)
+    at afterLoad (nod
+e:internal/modules/es
+m/loader:529:29)
+    at ModuleLoader.l
+oadAndTranslate (node
+:internal/modules/esm
+/loader:534:12)
+    at #getOrCreateMo
+duleJobAfterResolve (
+node:internal/modules
+/esm/loader:571:36)
+    at afterResolve (
+node:internal/modules
+/esm/loader:624:52)
+    at ModuleLoader.g
+etOrCreateModuleJob (
+node:internal/modules
+/esm/loader:630:12)
+    at 
+ModuleJob.syncLink (n
+ode:internal/modules/
+esm/module_job:143:33
+)
+    at 
+ModuleJob.link (node:
+internal/modules/esm/
+module_job:228:17)
+
+Node.js v24.12.0
