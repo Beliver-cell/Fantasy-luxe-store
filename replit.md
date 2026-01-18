@@ -5,7 +5,7 @@ Fantasy Luxe is a premium fashion e-commerce platform with a React frontend, Nod
 
 ## Project Structure
 ```
-Fantasy-luxe-store-main/
+.
 ├── frontendv3/    # React + Vite frontend (port 5000)
 ├── backendv3/     # Express.js API backend (port 8000)
 └── admin/         # Admin dashboard
@@ -32,6 +32,7 @@ The following secrets need to be configured:
 - Payments: Stripe/Flutterwave
 
 ## Recent Changes
+- Flattened directory structure (moved files from `Fantasy-luxe-store-main` to root)
 - Configured for Replit environment
 - Added CORS support for Replit domains
 - Set up workflow to run both frontend and backend

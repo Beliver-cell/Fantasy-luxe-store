@@ -1,4 +1,8 @@
 #!/bin/bash
 
-cd Fantasy-luxe-store-main/backendv3 && node server.js &
-cd Fantasy-luxe-store-main/frontendv3 && npm run dev
+# Kill any existing processes on ports 8000 and 5000
+fuser -k 8000/tcp 2>/dev/null
+fuser -k 5000/tcp 2>/dev/null
+
+cd backendv3 && node server.js &
+cd frontendv3 && npm run dev

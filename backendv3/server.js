@@ -64,7 +64,7 @@ const corsOptions = {
     }
     
     // Allow Replit domains
-    if (origin.includes('.replit.dev') || origin.includes('.repl.co') || origin.includes('.replit.app')) {
+    if (origin.includes('.replit.dev') || origin.includes('.repl.co') || origin.includes('.replit.app') || origin.includes('.replit.com')) {
       return callback(null, true);
     }
     
