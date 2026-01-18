@@ -282,7 +282,6 @@ const Product = () => {
                       src={assets.star_icon}
                       alt="rating"
                     />
-                    <p className="pl-2">(122)</p>
                   </div>
                   <p className="mt-5 text-3xl font-medium">
                     {currency}
@@ -351,9 +350,6 @@ const Product = () => {
                   <b className="border-1 border-gray-300 px-5 py-3 text-sm ">
                     Description
                   </b>
-                  <p className="border-1 border-gray-300 px-5 py-3 text-sm">
-                    Reviews (122)
-                  </p>
                 </div>
 
                 <div className="flex flex-col gap-4 border border-gray-300 px-6 py-6 text-sm text-gray-500">

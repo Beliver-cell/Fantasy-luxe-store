@@ -50,6 +50,7 @@ export const ShopContextProvider = ({ children }) => {
     }
 
     setCartItems(mycartData);
+    toast.success("Added to cart");
 
     if (token) {
       try {
