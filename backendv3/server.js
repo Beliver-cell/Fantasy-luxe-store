@@ -43,6 +43,9 @@ const initializeConnections = async () => {
 // CORS configuration - MUST be first
 const corsOptions = {
   origin: function (origin, callback) {
+    // Debug logging for CORS
+    if (origin) console.log('CORS Check - Origin:', origin);
+
     // Allow requests with no origin (mobile apps, Postman)
     if (!origin) {
       return callback(null, true);
