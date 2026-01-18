@@ -51,10 +51,14 @@ if (missingVars.length > 0) {
   console.error('\x1b[31m[CRITICAL ERROR] Missing required environment variables:\x1b[0m');
   missingVars.forEach(v => console.error(` - ${v}`));
   console.error('The server cannot start without these configurations.');
-  if (!isDev) {
+
+  
+  // In Vercel/Serverless, process.exit(1) causes "Function Invocation Failed"
+  // It is better to log the error and let the application fail gracefully or throw
+  if (!isDev && !process.env.VERCEL) {
     process.exit(1);
   } else {
-    console.warn('\x1b[33m[DEV MODE] Continuing with warnings - some features may not work\x1b[0m');
+    console.warn('\x1b[33m[WARNING] Continuing despite missing variables (Serverless/Dev mode)\x1b[0m');
   }
 }
 
