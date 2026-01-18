@@ -12,6 +12,7 @@ const Product = () => {
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [isAdded, setIsAdded] = useState(false);
 
   const fetchingData = async () => {
     products.map((item) => {
@@ -328,12 +329,14 @@ const Product = () => {
                   )}
 
                   <button
-                    onClick={() =>
-                      addToCart(productData._id, size, selectedColor)
-                    }
+                    onClick={() => {
+                      addToCart(productData._id, size, selectedColor);
+                      setIsAdded(true);
+                      setTimeout(() => setIsAdded(false), 2000);
+                    }}
                     className="bg-black px-8 py-3 text-white text-sm active:bg-gray-700 hover:bg-gray-900"
                   >
-                    ADD TO CART
+                    {isAdded ? "ADDED" : "ADD TO CART"}
                   </button>
                   <hr className="mt-8 sm:w-4/5" />
 
