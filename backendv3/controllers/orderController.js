@@ -2,6 +2,7 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import axios from "axios";
 import ENV from "../config/serverConfig.js";
+import { sendOrderPlacedEmail, sendPaymentSuccessEmail } from "../config/email.js";
 
 const currency = ENV.CURRENCY;
 const deliveryCharge = ENV.DELIVERY_CHARGE;
@@ -86,6 +87,14 @@ const placeOrderFlutterwave = async (req, res) => {
     );
 
     if (response.data.status === "success") {
+      // Send Order Placed Email (Pending Payment)
+      await sendOrderPlacedEmail(
+        address.email, 
+        newOrder._id, 
+        amount, 
+        response.data.data.link
+      );
+
       res.json({
         success: true,
         link: response.data.data.link,
@@ -167,6 +176,14 @@ const continuePayment = async (req, res) => {
     );
 
     if (response.data.status === "success") {
+      // Send Order Placed Email (Pending Payment)
+      await sendOrderPlacedEmail(
+        address.email, 
+        newOrder._id, 
+        amount, 
+        response.data.data.link
+      );
+
       res.json({
         success: true,
         link: response.data.data.link,
@@ -238,6 +255,11 @@ const verifyFlutterwave = async (req, res) => {
         flutterwaveRef: transaction_id 
       });
       await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
+      // Send Payment Success Email
+      const email = order.address.email || (await userModel.findById(userId)).email;
+      await sendPaymentSuccessEmail(email, orderId, paidAmount);
+
       res.json({ success: true });
     } else {
       await orderModel.findByIdAndDelete(orderId);

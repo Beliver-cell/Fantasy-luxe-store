@@ -30,6 +30,13 @@ const updateSettings = async (req, res) => {
     if (freeDeliveryEnabled !== undefined) settings.freeDeliveryEnabled = freeDeliveryEnabled;
     if (freeDeliveryThreshold !== undefined) settings.freeDeliveryThreshold = freeDeliveryThreshold;
 
+    if (req.body.deliveryInfo) {
+      settings.deliveryInfo = {
+        ...settings.deliveryInfo,
+        ...req.body.deliveryInfo
+      };
+    }
+
     await settings.save();
     res.json({ success: true, message: 'Settings updated successfully', settings });
   } catch (error) {

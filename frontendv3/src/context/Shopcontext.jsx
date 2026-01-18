@@ -167,6 +167,14 @@ export const ShopContextProvider = ({ children }) => {
     }
   };
 
+  const [deliveryInfo, setDeliveryInfo] = useState({
+    dispatchDays: "WEDNESDAYS and SATURDAYS",
+    deliveryTime: "1-3 working days",
+    outsideDispatchPolicy: "Orders placed outside these days will be shipped on the next scheduled dispatch day"
+  });
+
+  // ... (existing code)
+
   const getSettings = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/settings/get");
@@ -176,9 +184,13 @@ export const ShopContextProvider = ({ children }) => {
         setDeliveryFee(settingsDeliveryFee !== undefined && settingsDeliveryFee !== null ? settingsDeliveryFee : 0);
         setFreeDeliveryEnabled(response.data.settings.freeDeliveryEnabled || false);
         setFreeDeliveryThreshold(response.data.settings.freeDeliveryThreshold);
+        
+        if (response.data.settings.deliveryInfo) {
+          setDeliveryInfo(response.data.settings.deliveryInfo);
+        }
       }
     } catch (error) {
-      // Use default delivery fee if settings can't be fetched
+      // Use default delivery fee and info if settings can't be fetched
     }
   };
 
@@ -216,6 +228,7 @@ export const ShopContextProvider = ({ children }) => {
     token,
     setToken,
     backendUrl,
+    deliveryInfo,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

@@ -238,3 +238,121 @@ export const sendSubscriptionConfirmation = async (email) => {
   }
 };
 
+
+export const sendOrderPlacedEmail = async (email, orderId, amount, paymentLink) => {
+  const htmlContent = \
+    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+      <div style='background-color: #000; color: white; padding: 20px; text-align: center;'>
+        <h1>Fantasy Luxe</h1>
+      </div>
+      <div style='padding: 20px; background-color: #f9f9f9;'>
+        <h2>Order Received!</h2>
+        <p>Thank you for placing your order. Order ID: <strong>\</strong></p>
+        <p>Total Amount: <strong>\ \</strong></p>
+        <p>Your order is currently pending payment. Please complete your payment to finalize the order.</p>
+        
+        <div style='text-align: center; margin: 30px 0;'>
+          <a href='\' style='background-color: #000; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Complete Payment</a>
+        </div>
+
+        <p style='color: #666; margin-top: 20px;'>If the button doesn't work, copy and paste this link into your browser:</p>
+        <p style='color: #0066cc; word-break: break-all;'>\</p>
+        
+        <div style='background-color: #fff; padding: 15px; margin-top: 20px; border-radius: 5px; border: 1px solid #eee;'>
+          <h3 style='margin-top: 0;'>Delivery Information</h3>
+          <ul style='color: #666; padding-left: 20px; text-align: left;'>
+            <li>Orders are dispatched on <strong>WEDNESDAYS</strong> and <strong>SATURDAYS</strong>.</li>
+            <li>Delivery takes 1-3 working days after dispatch.</li>
+          </ul>
+        </div>
+      </div>
+      <div style='background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #999;'>
+        <p> 2025 Fantasy Luxe. All rights reserved.</p>
+      </div>
+    </div>
+  \;
+
+  try {
+    if (resend) {
+      await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: email,
+        subject: 'Order Received - Pending Payment #' + orderId,
+        html: htmlContent
+      });
+      console.log('Order placed email sent via Resend to:', email);
+      return true;
+    }
+
+    const transporter = createTransporter();
+    if (transporter) {
+      await transporter.sendMail({
+        from: ENV.EMAIL_USER,
+        to: email,
+        subject: 'Order Received - Pending Payment #' + orderId,
+        html: htmlContent
+      });
+      console.log('Order placed email sent via SMTP to:', email);
+      return true;
+    }
+  } catch (error) {
+    console.error('Order email error:', error.message);
+  }
+  return false;
+};
+
+export const sendPaymentSuccessEmail = async (email, orderId, amount) => {
+  const htmlContent = \
+    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+      <div style='background-color: #000; color: white; padding: 20px; text-align: center;'>
+        <h1>Fantasy Luxe</h1>
+      </div>
+      <div style='padding: 20px; background-color: #f9f9f9;'>
+        <h2 style='color: #008000;'>Payment Successful!</h2>
+        <p>Your payment for Order ID: <strong>\</strong> has been confirmed.</p>
+        <p>Amount Paid: <strong>\ \</strong></p>
+        <p>We will prepare your order for shipping immediately.</p>
+        
+        <div style='background-color: #fff; padding: 15px; margin-top: 20px; border-radius: 5px; border: 1px solid #eee;'>
+          <h3 style='margin-top: 0;'>Delivery Information</h3>
+          <ul style='color: #666; padding-left: 20px; text-align: left;'>
+            <li>Orders are dispatched on <strong>WEDNESDAYS</strong> and <strong>SATURDAYS</strong>.</li>
+            <li>Delivery takes 1-3 working days after dispatch.</li>
+            <li>You will receive another email when your order ships.</li>
+          </ul>
+        </div>
+      </div>
+      <div style='background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #999;'>
+        <p> 2025 Fantasy Luxe. All rights reserved.</p>
+      </div>
+    </div>
+  \;
+
+  try {
+    if (resend) {
+      await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: email,
+        subject: 'Payment Confirmed - Order #' + orderId,
+        html: htmlContent
+      });
+      console.log('Payment success email sent via Resend to:', email);
+      return true;
+    }
+
+    const transporter = createTransporter();
+    if (transporter) {
+      await transporter.sendMail({
+        from: ENV.EMAIL_USER,
+        to: email,
+        subject: 'Payment Confirmed - Order #' + orderId,
+        html: htmlContent
+      });
+      console.log('Payment success email sent via SMTP to:', email);
+      return true;
+    }
+  } catch (error) {
+    console.error('Payment success email error:', error.message);
+  }
+  return false;
+};

@@ -31,6 +31,7 @@ const Placeorder = () => {
     deliveryFee,
     getEffectiveDeliveryFee,
     products,
+    deliveryInfo
   } = useContext(ShopContext);
 
   useEffect(() => {
@@ -40,11 +41,13 @@ const Placeorder = () => {
         return;
       }
       try {
-        const response = await axios.get(backendUrl + "/api/user/profile", { headers: { token } });
+        const response = await axios.get(backendUrl + "/api/user/profile", {
+          headers: { token },
+        });
         if (response.data.success && response.data.user) {
           const user = response.data.user;
           const nameParts = (user.name || "").split(" ");
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             firstName: nameParts[0] || "",
             lastName: nameParts.slice(1).join(" ") || "",
@@ -76,7 +79,11 @@ const Placeorder = () => {
   const handleCancelPendingOrder = async () => {
     setCancellingOrder(true);
     try {
-      const response = await axios.post(backendUrl + "/api/order/cancel-pending", {}, { headers: { token } });
+      const response = await axios.post(
+        backendUrl + "/api/order/cancel-pending",
+        {},
+        { headers: { token } },
+      );
       if (response.data.success) {
         toast.success("Previous order cancelled. You can now proceed.");
         setHasPendingOrder(false);
@@ -103,7 +110,7 @@ const Placeorder = () => {
           for (const itemColor in cartItems[items][item]) {
             if (cartItems[items][item][itemColor] > 0) {
               const itemInfo = structuredClone(
-                products.find((product) => product._id === items)
+                products.find((product) => product._id === items),
               );
 
               if (itemInfo) {
@@ -120,10 +127,14 @@ const Placeorder = () => {
       let orderData = {
         address: formData,
         items: orderItems,
-        amount: (totalcartAmount() + getEffectiveDeliveryFee()), // Flutterwave expects major unit (Naira) for NGN
+        amount: totalcartAmount() + getEffectiveDeliveryFee(), // Flutterwave expects major unit (Naira) for NGN
       };
 
-      const responseFlutterwave = await axios.post(backendUrl + '/api/order/flutterwave', orderData, { headers: { token } });
+      const responseFlutterwave = await axios.post(
+        backendUrl + "/api/order/flutterwave",
+        orderData,
+        { headers: { token } },
+      );
 
       if (responseFlutterwave.data.success) {
         toast.info("Securely redirecting to Flutterwave...");
@@ -133,11 +144,16 @@ const Placeorder = () => {
         if (responseFlutterwave.data.message?.includes("pending order")) {
           setHasPendingOrder(true);
         }
-        toast.error(responseFlutterwave.data.message || "Payment initialization failed");
+        toast.error(
+          responseFlutterwave.data.message || "Payment initialization failed",
+        );
         setLoading(false);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || "Payment failed. Please try again.";
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Payment failed. Please try again.";
       toast.error(errorMessage);
       setLoading(false);
     }
@@ -242,6 +258,25 @@ const Placeorder = () => {
           type="number"
           placeholder="Contact Number"
         />
+
+        <div className="mt-6 p-4 bg-gray-50 rounded border border-gray-100">
+          <h3 className="font-medium mb-2 text-gray-800 flex items-center gap-2">
+            DELIVERY INFORMATION <span className="text-lg">🌸</span>
+          </h3>
+          <ul className="text-sm text-gray-600 space-y-2 list-disc pl-4">
+            <li>
+              Orders are dispatched on{" "}
+              <span className="font-semibold text-black">{deliveryInfo?.dispatchDays}</span>.
+            </li>
+            <li>
+              Delivery time is counted from the day your order is shipped and
+              usually takes {deliveryInfo?.deliveryTime} after dispatch.
+            </li>
+            <li>
+              {deliveryInfo?.outsideDispatchPolicy}
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* -------Right side */}
