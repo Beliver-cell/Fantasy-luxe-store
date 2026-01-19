@@ -73,7 +73,7 @@ const Product = () => {
         priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
           .toISOString()
           .split("T")[0],
-        availability: "https://schema.org/InStock",
+        availability: productData.stock !== null && productData.stock <= 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
         itemCondition: "https://schema.org/NewCondition",
         seller: {
           "@type": "Organization",
@@ -288,6 +288,11 @@ const Product = () => {
                     {currency}
                     {productData.price}
                   </p>
+                  {productData.stock !== null && productData.stock <= 0 && (
+                    <div className="mt-3 inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
+                      Out of Stock
+                    </div>
+                  )}
                   <p className="mt-5 text-gray-500 w-4/5">
                     {productData.description}
                   </p>
@@ -334,9 +339,18 @@ const Product = () => {
                       setIsAdded(true);
                       setTimeout(() => setIsAdded(false), 2000);
                     }}
-                    className="bg-black px-8 py-3 text-white text-sm active:bg-gray-700 hover:bg-gray-900"
+                    disabled={productData.stock !== null && productData.stock <= 0}
+                    className={`px-8 py-3 text-white text-sm ${
+                      productData.stock !== null && productData.stock <= 0
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-black active:bg-gray-700 hover:bg-gray-900"
+                    }`}
                   >
-                    {isAdded ? "ADDED" : "ADD TO CART"}
+                    {productData.stock !== null && productData.stock <= 0
+                      ? "OUT OF STOCK"
+                      : isAdded
+                      ? "ADDED"
+                      : "ADD TO CART"}
                   </button>
                   <hr className="mt-8 sm:w-4/5" />
 

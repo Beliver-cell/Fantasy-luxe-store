@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema({
     sizes: { type: Array, required: true },
     colors: { type: [String], default: [] },
     bestseller : { type: Boolean},
+    stock: { type: Number, default: null, min: 0 },
     date: { type: Number, required: true }
 })
 

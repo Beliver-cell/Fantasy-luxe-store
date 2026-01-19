@@ -172,21 +172,15 @@ export const ShopContextProvider = ({ children }) => {
     }
   };
 
-  const [deliveryInfo, setDeliveryInfo] = useState({
-    dispatchDays: "WEDNESDAYS and SATURDAYS",
-    deliveryTime: "1-3 working days",
-    outsideDispatchPolicy: "Orders placed outside these days will be shipped on the next scheduled dispatch day"
-  });
 
-  // ... (existing code)
 
   const getSettings = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/settings/get");
       if (response.data.success) {
         const settings = response.data.settings;
-        setCurrency(settings.currency || "₦");
-        setDeliveryFee(settings.deliveryFee !== undefined && settings.deliveryFee !== null ? Number(settings.deliveryFee) : 500);
+        // Note: currency is a const, not state, so we don't update it here
+        setDeliveryFee(settings.deliveryFee !== undefined && settings.deliveryFee !== null ? Number(settings.deliveryFee) : 0);
         setFreeDeliveryEnabled(settings.freeDeliveryEnabled || false);
         setFreeDeliveryThreshold(settings.freeDeliveryThreshold !== undefined && settings.freeDeliveryThreshold !== null ? Number(settings.freeDeliveryThreshold) : 10000);
         

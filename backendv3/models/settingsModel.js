@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const settingsSchema = new mongoose.Schema({
   deliveryFee: {
     type: Number,
-    default: 500,
+    default: 0,
     min: 0
   },
   currency: {

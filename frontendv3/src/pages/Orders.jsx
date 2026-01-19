@@ -177,6 +177,12 @@ const Orders = () => {
 
               <div className="text-sm text-gray-600 mb-3">
                 <p>Order Total: <span className="font-medium text-black">{currency}{order.amount}</span></p>
+                {order.deliveryFee !== undefined && order.deliveryFee > 0 && (
+                  <p>Delivery Fee: <span className="font-medium">{currency}{order.deliveryFee}</span></p>
+                )}
+                {order.deliveryFee === 0 && (
+                  <p>Delivery: <span className="text-green-600 font-medium">FREE</span></p>
+                )}
                 <p>Payment: {order.paymentMethod}</p>
               </div>
 

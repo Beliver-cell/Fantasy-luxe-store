@@ -21,7 +21,7 @@ const ENV = {
   FLUTTERWAVE_SECRET_KEY: process.env.FLUTTERWAVE_SECRET_KEY || (isDev ? 'demo' : null),
   VERCEL: process.env.VERCEL,
   CURRENCY: process.env.CURRENCY || 'NGN',
-  DELIVERY_CHARGE: process.env.DELIVERY_CHARGE ? parseInt(process.env.DELIVERY_CHARGE) : 500,
+  DELIVERY_CHARGE: process.env.DELIVERY_CHARGE ? parseInt(process.env.DELIVERY_CHARGE) : 0,
   SITE_LOGO_URL: process.env.SITE_LOGO_URL || 'https://fantasyluxe.store/logo.png'
 };
 

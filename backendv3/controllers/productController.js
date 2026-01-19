@@ -50,6 +50,7 @@ const addProduct = async (req, res) => {
             bestseller: bestseller === "true" ? true:false,
             images: imagesUrl,
             public_ids: imagesPublicIds,
+            stock: req.body.stock !== undefined && req.body.stock !== '' && !isNaN(Number(req.body.stock)) ? Number(req.body.stock) : null,
             date: Date.now(),
         };
 

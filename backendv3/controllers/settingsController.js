@@ -17,7 +17,7 @@ const getSettings = async (req, res) => {
     // Ensure critical fields have values even if missing in old DB documents
     const settingsObj = settings.toObject();
     if (settingsObj.deliveryFee === undefined || settingsObj.deliveryFee === null) {
-      settingsObj.deliveryFee = ENV.DELIVERY_CHARGE || 500;
+      settingsObj.deliveryFee = ENV.DELIVERY_CHARGE || 0;
     }
     
     res.json({ success: true, settings: settingsObj });

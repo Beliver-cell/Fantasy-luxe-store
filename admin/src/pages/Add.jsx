@@ -73,6 +73,7 @@ const Add = ({token}) => {
   const [colors, setColors] = useState([])
   const [customSize, setCustomSize] = useState("")
   const [customColor, setCustomColor] = useState("")
+  const [stock, setStock] = useState("")
   const [loading, setLoading] = useState(false)
 
   const [mainCategories, setMainCategories] = useState([]);
@@ -157,6 +158,7 @@ const Add = ({token}) => {
       formData.append("bestseller", bestseller)
       formData.append("sizes", JSON.stringify(sizes))
       formData.append("colors", JSON.stringify(colors))
+      if (stock !== "") formData.append("stock", stock)
 
       if (image1) formData.append("image1", image1)
       if (image2) formData.append("image2", image2)
@@ -175,6 +177,7 @@ const Add = ({token}) => {
         setPrice('')
         setSizes([])
         setColors([])
+        setStock("")
         setBestseller(false)
       }
       else{
@@ -240,6 +243,12 @@ const Add = ({token}) => {
       <div className='flex-1'>
         <p className='mb-2'>Product price</p>
         <input onChange={(e)=> setPrice(e.target.value)} value={price} className='w-full px-3 py-2 border rounded' type="number" placeholder="25" required />
+      </div>
+
+      <div className='flex-1'>
+        <p className='mb-2'>Stock quantity</p>
+        <input onChange={(e)=> setStock(e.target.value)} value={stock} className='w-full px-3 py-2 border rounded' type="number" placeholder="Unlimited" min="0" />
+        <p className='text-xs text-gray-500 mt-1'>Leave empty for unlimited stock</p>
       </div>
     </div>
 

@@ -85,10 +85,16 @@ const Orders = ({ token }) => {
               <p>Payment: {order.payment}</p>
               <p>Date: {new Date(order.date).toLocaleDateString()}</p>
             </div>
-            <p className="text-sm sm:text-[15px]">
-              {currency}
-              {order.amount}
-            </p>
+            <div>
+              <p className="text-sm sm:text-[15px]">
+                Total: {currency}{order.amount}
+              </p>
+              {order.deliveryFee !== undefined && (
+                <p className="text-xs text-gray-500">
+                  (Delivery: {order.deliveryFee === 0 ? 'FREE' : `${currency}${order.deliveryFee}`})
+                </p>
+              )}
+            </div>
             <select
               onChange={(event) => statusHandler(event, order._id)}
               value={order.status}

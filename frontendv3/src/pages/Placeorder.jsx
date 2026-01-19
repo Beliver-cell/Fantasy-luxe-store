@@ -31,17 +31,8 @@ const Placeorder = () => {
     deliveryFee,
     getEffectiveDeliveryFee,
     products,
-    deliveryInfo
-  const {
-    cartItems,
-    getcartCount,
-    totalcartAmount,
-    deliveryFee,
-    getEffectiveDeliveryFee,
-    currency,
-    backendUrl,
-    setCartItems,
     deliveryInfo,
+    currency,
   } = useContext(ShopContext);
 
   useEffect(() => {
@@ -138,6 +129,7 @@ const Placeorder = () => {
         address: formData,
         items: orderItems,
         amount: Number(totalcartAmount()) + Number(getEffectiveDeliveryFee()), // Flutterwave expects major unit (Naira) for NGN
+        deliveryFee: Number(getEffectiveDeliveryFee()),
       };
 
       const responseFlutterwave = await axios.post(

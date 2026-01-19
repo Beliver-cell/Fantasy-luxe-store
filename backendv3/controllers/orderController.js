@@ -1,6 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import settingsModel from "../models/settingsModel.js";
+import productModel from "../models/productModel.js";
 import axios from "axios";
 import ENV from "../config/serverConfig.js";
 import { sendOrderPlacedEmail, sendPaymentSuccessEmail } from "../config/email.js";
@@ -45,6 +46,29 @@ const placeOrderFlutterwave = async (req, res) => {
       });
     }
 
+    // Validate stock for all items
+    for (const item of items) {
+      const product = await productModel.findById(item._id);
+      if (!product) {
+        return res.status(400).json({
+          success: false,
+          message: `Product not found: ${item.name || item._id}`,
+        });
+      }
+      // Only check stock if product has limited stock (not null/undefined)
+      if (product.stock !== null && product.stock !== undefined) {
+        if (product.stock < item.quantity) {
+          return res.status(400).json({
+            success: false,
+            message: `Insufficient stock for "${product.name}". Available: ${product.stock}, Requested: ${item.quantity}`,
+          });
+        }
+      }
+    }
+
+    // Get delivery fee from request (calculated on frontend) or default to 0
+    const deliveryFee = req.body.deliveryFee !== undefined ? Number(req.body.deliveryFee) : 0;
+
     const orderData = {
       userId,
       items,
@@ -52,6 +76,7 @@ const placeOrderFlutterwave = async (req, res) => {
       address,
       paymentMethod: "Flutterwave",
       payment: false,
+      deliveryFee,
       date: Date.now(),
     };
 
@@ -260,6 +285,17 @@ const verifyFlutterwave = async (req, res) => {
         flutterwaveRef: transaction_id 
       });
       await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
+      // 7. Reduce stock for each item (atomic operation for concurrency safety)
+      for (const item of order.items) {
+        const product = await productModel.findById(item._id);
+        if (product && product.stock !== null && product.stock !== undefined) {
+          // Use atomic $inc to prevent race conditions
+          await productModel.findByIdAndUpdate(item._id, {
+            $inc: { stock: -item.quantity }
+          });
+        }
+      }
 
       // Send Payment Success Email
       const email = order.address.email || (await userModel.findById(userId)).email;

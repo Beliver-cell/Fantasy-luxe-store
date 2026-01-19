@@ -5,7 +5,7 @@ import { backendUrl } from '../App';
 
 const Settings = ({ token }) => {
   const [settings, setSettings] = useState({
-    deliveryFee: 500,
+    deliveryFee: 0,
     currency: 'NGN',
     freeDeliveryEnabled: false,
     freeDeliveryThreshold: 10000
