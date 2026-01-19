@@ -239,7 +239,10 @@ export const sendSubscriptionConfirmation = async (email) => {
 };
 
 
-export const sendOrderPlacedEmail = async (email, orderId, amount, paymentLink) => {
+export const sendOrderPlacedEmail = async (email, orderId, amount, paymentLink, deliveryInfo) => {
+  const dispatchDays = deliveryInfo?.dispatchDays || "WEDNESDAYS and SATURDAYS";
+  const deliveryTime = deliveryInfo?.deliveryTime || "1-3 working days";
+  
   const htmlContent = `
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
       <div style='background-color: #000; color: white; padding: 20px; text-align: center;'>
@@ -261,8 +264,8 @@ export const sendOrderPlacedEmail = async (email, orderId, amount, paymentLink) 
         <div style='background-color: #fff; padding: 15px; margin-top: 20px; border-radius: 5px; border: 1px solid #eee;'>
           <h3 style='margin-top: 0;'>Delivery Information</h3>
           <ul style='color: #666; padding-left: 20px; text-align: left;'>
-            <li>Orders are dispatched on <strong>WEDNESDAYS</strong> and <strong>SATURDAYS</strong>.</li>
-            <li>Delivery takes 1-3 working days after dispatch.</li>
+            <li>Orders are dispatched on <strong>${dispatchDays}</strong>.</li>
+            <li>Delivery takes <strong>${deliveryTime}</strong> after dispatch.</li>
           </ul>
         </div>
       </div>
@@ -301,7 +304,10 @@ export const sendOrderPlacedEmail = async (email, orderId, amount, paymentLink) 
   return false;
 };
 
-export const sendPaymentSuccessEmail = async (email, orderId, amount) => {
+export const sendPaymentSuccessEmail = async (email, orderId, amount, deliveryInfo) => {
+  const dispatchDays = deliveryInfo?.dispatchDays || "WEDNESDAYS and SATURDAYS";
+  const deliveryTime = deliveryInfo?.deliveryTime || "1-3 working days";
+
   const htmlContent = `
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
       <div style='background-color: #000; color: white; padding: 20px; text-align: center;'>
@@ -316,8 +322,8 @@ export const sendPaymentSuccessEmail = async (email, orderId, amount) => {
         <div style='background-color: #fff; padding: 15px; margin-top: 20px; border-radius: 5px; border: 1px solid #eee;'>
           <h3 style='margin-top: 0;'>Delivery Information</h3>
           <ul style='color: #666; padding-left: 20px; text-align: left;'>
-            <li>Orders are dispatched on <strong>WEDNESDAYS</strong> and <strong>SATURDAYS</strong>.</li>
-            <li>Delivery takes 1-3 working days after dispatch.</li>
+            <li>Orders are dispatched on <strong>${dispatchDays}</strong>.</li>
+            <li>Delivery takes <strong>${deliveryTime}</strong> after dispatch.</li>
             <li>You will receive another email when your order ships.</li>
           </ul>
         </div>

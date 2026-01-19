@@ -13,6 +13,11 @@ export const ShopContextProvider = ({ children }) => {
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [freeDeliveryEnabled, setFreeDeliveryEnabled] = useState(false);
   const [freeDeliveryThreshold, setFreeDeliveryThreshold] = useState(10000);
+  const [deliveryInfo, setDeliveryInfo] = useState({
+    dispatchDays: "WEDNESDAYS and SATURDAYS",
+    deliveryTime: "1-3 working days",
+    outsideDispatchPolicy: "Orders placed outside these days will be shipped on the next scheduled dispatch day"
+  });
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
@@ -179,14 +184,14 @@ export const ShopContextProvider = ({ children }) => {
     try {
       const response = await axios.get(backendUrl + "/api/settings/get");
       if (response.data.success) {
-        const settingsDeliveryFee = response.data.settings.deliveryFee;
-        // If undefined or null, default to 0. If it is 0, it stays 0.
-        setDeliveryFee(settingsDeliveryFee !== undefined && settingsDeliveryFee !== null ? Number(settingsDeliveryFee) : 0);
-        setFreeDeliveryEnabled(response.data.settings.freeDeliveryEnabled || false);
-        setFreeDeliveryThreshold(Number(response.data.settings.freeDeliveryThreshold) || 10000);
+        const settings = response.data.settings;
+        setCurrency(settings.currency || "₦");
+        setDeliveryFee(settings.deliveryFee !== undefined && settings.deliveryFee !== null ? Number(settings.deliveryFee) : 500);
+        setFreeDeliveryEnabled(settings.freeDeliveryEnabled || false);
+        setFreeDeliveryThreshold(settings.freeDeliveryThreshold !== undefined && settings.freeDeliveryThreshold !== null ? Number(settings.freeDeliveryThreshold) : 10000);
         
-        if (response.data.settings.deliveryInfo) {
-          setDeliveryInfo(response.data.settings.deliveryInfo);
+        if (settings.deliveryInfo) {
+          setDeliveryInfo(settings.deliveryInfo);
         }
       }
     } catch (error) {
@@ -212,6 +217,7 @@ export const ShopContextProvider = ({ children }) => {
     deliveryFee,
     freeDeliveryEnabled,
     freeDeliveryThreshold,
+    deliveryInfo,
     getEffectiveDeliveryFee,
     currency,
     search,

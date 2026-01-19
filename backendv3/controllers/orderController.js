@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import settingsModel from "../models/settingsModel.js";
 import axios from "axios";
 import ENV from "../config/serverConfig.js";
 import { sendOrderPlacedEmail, sendPaymentSuccessEmail } from "../config/email.js";
@@ -87,12 +88,16 @@ const placeOrderFlutterwave = async (req, res) => {
     );
 
     if (response.data.status === "success") {
+      // Fetch current settings for dynamic delivery info in email
+      const settings = await settingsModel.findOne();
+      
       // Send Order Placed Email (Pending Payment)
       await sendOrderPlacedEmail(
         address.email, 
         newOrder._id, 
         amount, 
-        response.data.data.link
+        response.data.data.link,
+        settings?.deliveryInfo
       );
 
       res.json({
@@ -258,7 +263,8 @@ const verifyFlutterwave = async (req, res) => {
 
       // Send Payment Success Email
       const email = order.address.email || (await userModel.findById(userId)).email;
-      await sendPaymentSuccessEmail(email, orderId, paidAmount);
+      const settings = await settingsModel.findOne();
+      await sendPaymentSuccessEmail(email, orderId, paidAmount, settings?.deliveryInfo);
 
       res.json({ success: true });
     } else {

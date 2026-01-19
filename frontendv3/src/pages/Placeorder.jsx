@@ -32,6 +32,16 @@ const Placeorder = () => {
     getEffectiveDeliveryFee,
     products,
     deliveryInfo
+  const {
+    cartItems,
+    getcartCount,
+    totalcartAmount,
+    deliveryFee,
+    getEffectiveDeliveryFee,
+    currency,
+    backendUrl,
+    setCartItems,
+    deliveryInfo,
   } = useContext(ShopContext);
 
   useEffect(() => {
@@ -263,19 +273,31 @@ const Placeorder = () => {
           <h3 className="font-medium mb-2 text-gray-800 flex items-center gap-2">
             DELIVERY INFORMATION <span className="text-lg">🌸</span>
           </h3>
-          <ul className="text-sm text-gray-600 space-y-2 list-disc pl-4">
-            <li>
-              Orders are dispatched on{" "}
-              <span className="font-semibold text-black">{deliveryInfo?.dispatchDays}</span>.
-            </li>
-            <li>
-              Delivery time is counted from the day your order is shipped and
-              usually takes {deliveryInfo?.deliveryTime} after dispatch.
-            </li>
-            <li>
-              {deliveryInfo?.outsideDispatchPolicy}
-            </li>
-          </ul>
+          <div className="flex flex-col gap-2 mt-2">
+            <div className="flex items-start gap-2 text-gray-600">
+              <span className="text-black font-medium leading-none">•</span>
+              <p>
+                Orders are dispatched on{" "}
+                <strong className="text-black">
+                  {deliveryInfo.dispatchDays}
+                </strong>
+                .
+              </p>
+            </div>
+            <div className="flex items-start gap-2 text-gray-600">
+              <span className="text-black font-medium leading-none">•</span>
+              <p>
+                Delivery takes{" "}
+                <strong className="text-black">
+                  {deliveryInfo.deliveryTime}
+                </strong>{" "}
+                after dispatch.
+              </p>
+            </div>
+            <p className="text-xs text-gray-500 italic ml-4">
+              {deliveryInfo.outsideDispatchPolicy}
+            </p>
+          </div>
         </div>
       </div>
 
