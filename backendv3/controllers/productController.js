@@ -146,4 +146,65 @@ const removeCollection = async (req, res) => {
     }
 }
 
-export { listProducts, addProduct, removeProduct, singleProduct, removeCollection }
+// function for updating product
+const updateProduct = async (req, res) => {
+    try {
+        const { id, name, description, price, category, subCategory, sizes, colors, bestseller, stock } = req.body;
+
+        if (!id) {
+            return res.json({ success: false, message: "Product ID is required" });
+        }
+
+        const updateData = {
+            name,
+            description,
+            price: Number(price),
+            category,
+            subCategory,
+            bestseller: bestseller === "true",
+            stock: stock !== undefined && stock !== '' && !isNaN(Number(stock)) ? Number(stock) : null,
+        };
+
+        if (sizes) updateData.sizes = JSON.parse(sizes);
+        if (colors) updateData.colors = JSON.parse(colors);
+
+        // Handle Image Updates if files are provided
+        if (req.files && Object.keys(req.files).length > 0) {
+            const product = await productModel.findById(id);
+            let imagesUrl = [...product.images];
+            let imagesPublicIds = [...(product.public_ids || [])];
+
+            // Helper to replace image at index
+            const replaceImage = async (file, index) => {
+                 if (file) {
+                    // Delete old image if it exists and has a public_id
+                    if (imagesPublicIds[index]) {
+                        try { await cloudinary.uploader.destroy(imagesPublicIds[index]); } catch (e) {}
+                    }
+                    // Upload new
+                    let result = await cloudinary.uploader.upload(file.path, {resource_type:'image'});
+                    imagesUrl[index] = result.secure_url;
+                    imagesPublicIds[index] = result.public_id;
+                 }
+            }
+
+            if (req.files.image1) await replaceImage(req.files.image1[0], 0);
+            if (req.files.image2) await replaceImage(req.files.image2[0], 1);
+            if (req.files.image3) await replaceImage(req.files.image3[0], 2);
+            if (req.files.image4) await replaceImage(req.files.image4[0], 3);
+
+            // Filter out any undefineds if the array was sparse (shouldn't be with this logic but safe to check)
+            updateData.images = imagesUrl.filter(x => x);
+            updateData.public_ids = imagesPublicIds.filter(x => x);
+        }
+
+        await productModel.findByIdAndUpdate(id, updateData);
+        res.json({ success: true, message: "Product Updated" });
+
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+export { listProducts, addProduct, removeProduct, singleProduct, removeCollection, updateProduct }

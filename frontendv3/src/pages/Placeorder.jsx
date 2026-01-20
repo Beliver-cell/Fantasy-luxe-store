@@ -33,7 +33,12 @@ const Placeorder = () => {
     products,
     deliveryInfo,
     currency,
+    getSettings
   } = useContext(ShopContext);
+
+  useEffect(() => {
+    getSettings();
+  }, [])
 
   useEffect(() => {
     const loadUserProfile = async () => {

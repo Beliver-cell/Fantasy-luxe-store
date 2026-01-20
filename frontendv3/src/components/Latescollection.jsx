@@ -28,6 +28,7 @@ const Latescollection = () => {
             image={item.images}
             name={item.name}
             price={item.price}
+            stock={item.stock}
           />
         ))}
       </div>

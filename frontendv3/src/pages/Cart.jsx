@@ -6,9 +6,13 @@ import CartTotal from "../components/CartTotal";
 import EmptyState from "../components/EmptyState";
 
 const Cart = () => {
-  const { products, cartItems, currency, updateQuantity, navigate } =
+  const { products, cartItems, currency, updateQuantity, navigate, getSettings } =
     useContext(ShopContext);
   const [cartData, setcartData] = useState([]);
+
+  useEffect(() => {
+    getSettings();
+  }, [])
 
   useEffect(() => {
     const tempData = [];
@@ -88,6 +92,12 @@ const Cart = () => {
                       {item.color}
                     </p>
                   </div>
+                  {productData.stock !== null && productData.stock !== undefined && productData.stock <= 0 && (
+                     <p className="text-red-500 text-xs mt-1">Out of Stock</p>
+                  )}
+                  {productData.stock !== null && productData.stock !== undefined && productData.stock > 0 && productData.stock < item.quantity && (
+                     <p className="text-orange-500 text-xs mt-1">Only {productData.stock} left!</p>
+                  )}
                 </div>
                 <input
                   onChange={(e) =>

@@ -31,6 +31,33 @@ export const ShopContextProvider = ({ children }) => {
       toast.error("Select Product Size");
       return;
     }
+
+    // Check stock
+    const product = products.find(p => p._id === itemId);
+    if (product && product.stock !== null && product.stock !== undefined) {
+      if (product.stock <= 0) {
+        toast.error("Out of Stock");
+        return;
+      }
+      
+      // Calculate current quantity in cart for this item across all variants to be strict, or just this variant logic?
+      // Usually stock is per product ID total unless variant specific.
+      // Based on models, stock is on Product Level, so we should sum up all cart items matching this ID.
+      let currentQtyInCart = 0;
+      if (cartItems[itemId]) {
+        for (const s in cartItems[itemId]) {
+          for (const c in cartItems[itemId][s]) {
+             currentQtyInCart += cartItems[itemId][s][c];
+          }
+        }
+      }
+
+      if (currentQtyInCart + 1 > product.stock) {
+        toast.error(`Only ${product.stock} items available in stock`);
+        return;
+      }
+    }
+
     const mycartData = structuredClone(cartItems || {});
 
     if (mycartData[itemId]) {
@@ -229,6 +256,7 @@ export const ShopContextProvider = ({ children }) => {
     setToken,
     backendUrl,
     deliveryInfo,
+    getSettings,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

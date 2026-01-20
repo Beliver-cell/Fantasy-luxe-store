@@ -4,7 +4,7 @@ import adminAuth from '../middleware/adminAuth.js';
 
 const settingsRouter = express.Router();
 
-settingsRouter.get('/get', adminAuth, getSettings);
+settingsRouter.get('/get', getSettings);
 settingsRouter.post('/get', adminAuth, getSettings); // Add POST support
 settingsRouter.post('/update', adminAuth, updateSettings);
 

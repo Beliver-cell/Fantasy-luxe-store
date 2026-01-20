@@ -236,6 +236,7 @@ const Collection = ({ initialCategory, initialSubCategory }) => {
                 name={item.name}
                 id={item._id}
                 price={item.price}
+                stock={item.stock}
                 image={item.images[0]}
               />
             ))}

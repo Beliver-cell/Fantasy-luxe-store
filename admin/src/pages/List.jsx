@@ -3,8 +3,10 @@ import React from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const List = () => {
+  const navigate = useNavigate();
   const [list, setList] = useState([])
   const fetchList = async () => {
     try {
@@ -104,7 +106,7 @@ const List = () => {
               <p>{item.name}</p>
               <p className='hidden md:block'>{item.category}</p>
               <p>{currency}{item.price}</p>
-              <div className='flex justify-end md:justify-center gap-2 flex-col md:flex-row'>
+                <button onClick={() => navigate(`/edit/${item._id}`)} className='text-right md:text-center text-blue-600 font-bold px-2 cursor-pointer'>Edit</button>
                 <button onClick={() => removeProduct(item._id)} className='text-right md:text-center text-red-600 font-bold px-2 cursor-pointer'>Delete</button>
                 <button onClick={() => removeCollection(item.category)} className='text-right md:text-center text-xs text-gray-600 underline cursor-pointer'>Delete Coll.</button>
               </div>

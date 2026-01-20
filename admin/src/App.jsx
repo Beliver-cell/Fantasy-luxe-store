@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import Login from './components/Login';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Add from './pages/Add';
+import Edit from './pages/Edit';
 import List from './pages/List';
 import Orders from './pages/Orders';
 import Categories from './pages/Categories';
@@ -43,6 +44,7 @@ const App = () => {
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
                 <Route path="/dashboard" element={<Dashboard token={token} />} />
                 <Route path="/add" element={<Add token={token} />} />
+                <Route path="/edit/:productId" element={<Edit token={token} />} />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/categories" element={<Categories token={token} />} />
                 <Route path="/order" element={<Orders token={token} />} />

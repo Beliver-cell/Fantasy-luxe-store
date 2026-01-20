@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from 'axios';
 import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/Shopcontext";
 import { assets } from "../assets/assets";
@@ -7,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { products, currency, addToCart, backendUrl } = useContext(ShopContext);
   const [productData, setproductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
@@ -15,14 +16,24 @@ const Product = () => {
   const [isAdded, setIsAdded] = useState(false);
 
   const fetchingData = async () => {
-    products.map((item) => {
-      if (item._id === productId) {
-        setproductData(item);
-        setImage(item.images[0]);
-      } else {
-        return null;
+    try {
+      // 1. Immediate display from context
+      const contextProduct = products.find(item => item._id === productId);
+      if (contextProduct) {
+        setproductData(contextProduct);
+        setImage(contextProduct.images[0]);
       }
-    });
+
+      // 2. Fetch fresh data for real-time stock
+      const response = await axios.post(backendUrl + '/api/product/single', { productId });
+      if (response.data.success) {
+        setproductData(response.data.product);
+        // Only update image if not set (or if we want to reset it, currently we keep context image or set it if new)
+        if (!contextProduct) setImage(response.data.product.images[0]);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
