@@ -6,6 +6,7 @@ import { assets } from '../assets/assets';
 
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('All');
 
   const fetchAllOrders = async () => {
     if (!token) return null;
@@ -55,11 +56,29 @@ const Orders = ({ token }) => {
     fetchAllOrders();
   }, [token]);
 
+  const filteredOrders = orders.filter(
+    (order) => statusFilter === "All" || order.status === statusFilter
+  );
+
   return (
     <div>
-      <h3>Order Page</h3>
+      <div className="flex justify-between items-center mb-4">
+        <h3>Order Page</h3>
+        <select 
+          className="border border-gray-300 rounded px-3 py-1"
+          onChange={(e) => setStatusFilter(e.target.value)}
+          value={statusFilter}
+        >
+          <option value="All">All Orders</option>
+          <option value="Order Placed">Order Placed</option>
+          <option value="Packing">Packing</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Out for delivery">Out for delivery</option>
+          <option value="Delivered">Delivered</option>
+        </select>
+      </div>
       <div>
-        {orders.map((order, index) => (
+        {filteredOrders.map((order, index) => (
           <div
             key={index}
             className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-300 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
@@ -102,22 +121,24 @@ const Orders = ({ token }) => {
                 </p>
               )}
             </div>
-            <select
-              onChange={(event) => statusHandler(event, order._id)}
-              value={order.status}
-              className="p-2 font-semibold"
-            >
-              <option value="Order Placed">Order Placed</option>
-              <option value="Packing">Packing</option>
-              <option value="Shipped">Shipped</option>
-              <option value="Out for delivery">Out for delivery</option>
-              <option value="Delivered">Delivered</option>
-            </select>
-            {order.trackingUrl && (
-                <div className="mt-2 text-xs text-gray-500 max-w-[150px] truncate">
-                    Tracking: <a href={order.trackingUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">Link</a>
-                </div>
-            )}
+            <div>
+              <select
+                onChange={(event) => statusHandler(event, order._id)}
+                value={order.status}
+                className="p-2 font-semibold"
+              >
+                <option value="Order Placed">Order Placed</option>
+                <option value="Packing">Packing</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Out for delivery">Out for delivery</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+              {order.trackingUrl && (
+                  <div className="mt-2 text-xs text-gray-500 max-w-[150px] truncate">
+                      Tracking: <a href={order.trackingUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">Link</a>
+                  </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
