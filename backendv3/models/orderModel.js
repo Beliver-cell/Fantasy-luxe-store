@@ -10,7 +10,8 @@ const orderSchema = new mongoose.Schema({
     payment: { type: Boolean, required: true, default: false},
     date: { type: Date, required: true },
     flutterwaveRef: { type: String },
-    deliveryFee: { type: Number, default: 0 }
+    deliveryFee: { type: Number, default: 0 },
+    trackingUrl: { type: String, default: null }
 })
 
 const orderModel = mongoose.models.order || mongoose.model('order', orderSchema)

@@ -336,8 +336,26 @@ const userOrders = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   try {
-    const { orderId, status } = req.body;
-    await orderModel.findByIdAndUpdate(orderId, { status });
+    const { orderId, status, trackingUrl } = req.body;
+    
+    // Create update object
+    const updateData = { status };
+    if (trackingUrl) {
+        updateData.trackingUrl = trackingUrl;
+    }
+
+    const order = await orderModel.findByIdAndUpdate(orderId, updateData, { new: true });
+    
+    if (status === 'Shipped' && order) {
+        const user = await userModel.findById(order.userId);
+        // Fallback to order address email if user not found or no email (though user should exist)
+        const email = order.address?.email || user?.email;
+        
+        if (email) {
+            await sendOrderShippedEmail(email, orderId, trackingUrl || order.trackingUrl);
+        }
+    }
+
     res.json({ success: true, message: "Order Status Updated" });
   } catch (error) {
     res.json({ success: false, message: error.message });

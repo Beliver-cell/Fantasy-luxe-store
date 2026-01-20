@@ -362,3 +362,59 @@ export const sendPaymentSuccessEmail = async (email, orderId, amount, deliveryIn
   }
   return false;
 };
+
+
+export const sendOrderShippedEmail = async (email, orderId, trackingUrl) => {
+  const htmlContent = `
+    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+      <div style='background-color: #000; color: white; padding: 20px; text-align: center;'>
+        <h1>Fantasy Luxe</h1>
+      </div>
+      <div style='padding: 20px; background-color: #f9f9f9;'>
+        <h2 style='color: #000;'>Your Order Has Shipped!</h2>
+        <p>Good news! Your order ID: <strong>${orderId}</strong> is on its way.</p>
+        
+        ${trackingUrl ? `
+        <div style='text-align: center; margin: 30px 0;'>
+          <a href='${trackingUrl}' style='background-color: #000; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Track Your Order</a>
+        </div>
+        <p style='color: #666; margin-top: 20px;'>Or copy this link:</p>
+        <p style='color: #0066cc; word-break: break-all;'>${trackingUrl}</p>
+        ` : ''}
+        
+        <p>Thank you for shopping with us!</p>
+      </div>
+      <div style='background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #999;'>
+        <p>© 2025 Fantasy Luxe. All rights reserved.</p>
+      </div>
+    </div>
+  `;
+
+  try {
+    if (resend) {
+      await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: email,
+        subject: 'Your Fantasy Luxe Order Has Shipped! #' + orderId,
+        html: htmlContent
+      });
+      console.log('Order shipped email sent via Resend to:', email);
+      return true;
+    }
+
+    const transporter = createTransporter();
+    if (transporter) {
+      await transporter.sendMail({
+        from: ENV.EMAIL_USER,
+        to: email,
+        subject: 'Your Fantasy Luxe Order Has Shipped! #' + orderId,
+        html: htmlContent
+      });
+      console.log('Order shipped email sent via SMTP to:', email);
+      return true;
+    }
+  } catch (error) {
+    console.error('Order shipped email error:', error.message);
+  }
+  return false;
+};

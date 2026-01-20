@@ -28,9 +28,16 @@ const Orders = ({ token }) => {
 
   const statusHandler = async (event, orderId) => {
     try {
+      const newStatus = event.target.value;
+      let trackingUrl = null;
+
+      if (newStatus === 'Shipped') {
+        trackingUrl = prompt("Enter Shipping Tracking URL (or leave empty):");
+      }
+
       const response = await axios.post(
         `${backendUrl}/api/order/status`,
-        { orderId, status: event.target.value },
+        { orderId, status: newStatus, trackingUrl },
         { headers: { token } }
       );
       if (response.data.success) {
@@ -106,6 +113,11 @@ const Orders = ({ token }) => {
               <option value="Out for delivery">Out for delivery</option>
               <option value="Delivered">Delivered</option>
             </select>
+            {order.trackingUrl && (
+                <div className="mt-2 text-xs text-gray-500 max-w-[150px] truncate">
+                    Tracking: <a href={order.trackingUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">Link</a>
+                </div>
+            )}
           </div>
         ))}
       </div>

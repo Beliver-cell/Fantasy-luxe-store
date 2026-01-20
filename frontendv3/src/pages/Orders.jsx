@@ -210,10 +210,20 @@ const Orders = () => {
               ))}
 
               {order.payment && (
-                <div className="mt-3 text-right">
+                <div className="mt-3 text-right flex justify-end gap-2">
                   <button onClick={loadOrderData} className="border border-gray-200 px-4 py-2 text-sm font-medium rounded-sm cursor-pointer hover:bg-gray-50">
-                    Track Order
+                    Refresh Status
                   </button>
+                  {order.trackingUrl && (
+                      <a 
+                        href={order.trackingUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="bg-black text-white px-4 py-2 text-sm font-medium rounded-sm cursor-pointer hover:bg-gray-800"
+                      >
+                        Track Shipment
+                      </a>
+                  )}
                 </div>
               )}
             </div>
