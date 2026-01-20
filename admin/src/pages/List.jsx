@@ -106,9 +106,10 @@ const List = () => {
               <p>{item.name}</p>
               <p className='hidden md:block'>{item.category}</p>
               <p>{currency}{item.price}</p>
-                <button onClick={() => navigate(`/edit/${item._id}`)} className='text-right md:text-center text-blue-600 font-bold px-2 cursor-pointer'>Edit</button>
-                <button onClick={() => removeProduct(item._id)} className='text-right md:text-center text-red-600 font-bold px-2 cursor-pointer'>Delete</button>
-                <button onClick={() => removeCollection(item.category)} className='text-right md:text-center text-xs text-gray-600 underline cursor-pointer'>Delete Coll.</button>
+              <div className='flex flex-col gap-1 items-end md:items-center'>
+                <button onClick={() => navigate(`/edit/${item._id}`)} className='text-blue-600 font-bold px-2 cursor-pointer'>Edit</button>
+                <button onClick={() => removeProduct(item._id)} className='text-red-600 font-bold px-2 cursor-pointer'>Delete</button>
+                <button onClick={() => removeCollection(item.category)} className='text-xs text-gray-500 underline cursor-pointer'>Del Col</button>
               </div>
             </div>
           ))

@@ -395,6 +395,38 @@ const cancelPendingOrder = async (req, res) => {
   }
 };
 
+const dashboardData = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+    
+    const totalEarnings = orders.reduce((acc, order) => {
+      // Only count earnings for orders that are paid
+      return order.payment ? acc + order.amount : acc;
+    }, 0);
+
+    const totalOrders = orders.length;
+    
+    const statusCounts = orders.reduce((acc, order) => {
+      acc[order.status] = (acc[order.status] || 0) + 1;
+      return acc;
+    }, {});
+
+    const latestOrders = orders.reverse().slice(0, 5);
+
+    res.json({
+      success: true,
+      stats: {
+        totalEarnings,
+        totalOrders,
+        statusCounts,
+        latestOrders
+      }
+    });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   placeOrderFlutterwave,
   allOrders,
@@ -403,4 +435,5 @@ export {
   verifyFlutterwave,
   cancelPendingOrder,
   continuePayment,
+  dashboardData,
 };

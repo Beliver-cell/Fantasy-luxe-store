@@ -1,61 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { backendUrl } from '../App';
+import { backendUrl, currency } from '../App';
 import { toast } from 'react-toastify';
 
 const Dashboard = ({ token }) => {
-  const [analytics, setAnalytics] = useState({
-    totalSubscribers: 0,
-    totalUsers: 0,
-    recentSubscribers: [],
-    recentUsers: []
+  const [stats, setStats] = useState({
+    totalEarnings: 0,
+    totalOrders: 0,
+    statusCounts: {},
+    latestOrders: []
   });
-  const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('overview');
 
-  const fetchAnalytics = async () => {
+  const fetchDashboardData = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/subscriber/analytics`, {
+      const response = await axios.get(`${backendUrl}/api/order/dashboard`, {
         headers: { token }
       });
       if (response.data.success) {
-        setAnalytics(response.data.analytics);
+        setStats(response.data.stats);
       }
     } catch (error) {
-      toast.error('Failed to fetch analytics');
-    }
-  };
-
-  const fetchSubscribers = async () => {
-    try {
-      const response = await axios.get(`${backendUrl}/api/subscriber/list`, {
-        headers: { token }
-      });
-      if (response.data.success) {
-        setSubscribers(response.data.subscribers);
-      }
-    } catch (error) {
-      toast.error('Failed to fetch subscribers');
+      toast.error('Failed to fetch dashboard data');
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      await Promise.all([fetchAnalytics(), fetchSubscribers()]);
-      setLoading(false);
-    };
-    loadData();
+    if (token) {
+      fetchDashboardData();
+    }
   }, [token]);
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
 
   if (loading) {
     return (
@@ -69,154 +45,91 @@ const Dashboard = ({ token }) => {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-blue-100 text-sm font-medium">Total Subscribers</p>
-              <p className="text-4xl font-bold mt-2">{analytics.totalSubscribers}</p>
-              <p className="text-blue-100 text-xs mt-2">Newsletter subscribers</p>
+              <p className="text-gray-500 text-sm font-medium">Total Earnings</p>
+              <p className="text-3xl font-bold mt-2 text-gray-900">{currency}{stats.totalEarnings.toLocaleString()}</p>
             </div>
-            <div className="bg-white/20 rounded-full p-4">
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            <div className="bg-green-100 p-3 rounded-full">
+              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-green-100 text-sm font-medium">Total Signups</p>
-              <p className="text-4xl font-bold mt-2">{analytics.totalUsers}</p>
-              <p className="text-green-100 text-xs mt-2">Registered users</p>
+              <p className="text-gray-500 text-sm font-medium">Total Orders</p>
+              <p className="text-3xl font-bold mt-2 text-gray-900">{stats.totalOrders}</p>
             </div>
-            <div className="bg-white/20 rounded-full p-4">
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+            <div className="bg-blue-100 p-3 rounded-full">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
             </div>
           </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+           <div>
+              <p className="text-gray-500 text-sm font-medium mb-3">Order Status</p>
+              <div className="space-y-2">
+                {['Order Placed', 'Packing', 'Shipped', 'Delivered'].map(status => (
+                    <div key={status} className="flex justify-between items-center text-sm">
+                        <span className="text-gray-600">{status}</span>
+                        <span className="font-semibold bg-gray-100 px-2 py-0.5 rounded text-gray-800">
+                            {stats.statusCounts[status] || 0}
+                        </span>
+                    </div>
+                ))}
+              </div>
+            </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border">
-        <div className="border-b">
-          <div className="flex">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === 'overview'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Recent Activity
-            </button>
-            <button
-              onClick={() => setActiveTab('subscribers')}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === 'subscribers'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              All Subscribers ({subscribers.length})
-            </button>
-          </div>
-        </div>
-
-        <div className="p-6">
-          {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-gray-800">Recent Subscribers</h3>
-                {analytics.recentSubscribers.length > 0 ? (
-                  <div className="space-y-3">
-                    {analytics.recentSubscribers.map((sub, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                            </svg>
-                          </div>
-                          <span className="text-sm text-gray-700">{sub.email}</span>
-                        </div>
-                        <span className="text-xs text-gray-500">{formatDate(sub.subscribedAt)}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-sm">No subscribers yet</p>
-                )}
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-gray-800">Recent Signups</h3>
-                {analytics.recentUsers.length > 0 ? (
-                  <div className="space-y-3">
-                    {analytics.recentUsers.map((user, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                            </svg>
-                          </div>
-                          <div>
-                            <p className="text-sm text-gray-700">{user.name}</p>
-                            <p className="text-xs text-gray-500">{user.email}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-sm">No users yet</p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'subscribers' && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-800">All Newsletter Subscribers</h3>
-              {subscribers.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                      <tr className="border-b bg-gray-50">
-                        <th className="px-4 py-3 text-sm font-semibold text-gray-600">#</th>
-                        <th className="px-4 py-3 text-sm font-semibold text-gray-600">Email</th>
-                        <th className="px-4 py-3 text-sm font-semibold text-gray-600">Subscribed Date</th>
-                        <th className="px-4 py-3 text-sm font-semibold text-gray-600">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {subscribers.map((sub, index) => (
-                        <tr key={sub._id} className="border-b hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm text-gray-600">{index + 1}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{sub.email}</td>
-                          <td className="px-4 py-3 text-sm text-gray-600">{formatDate(sub.subscribedAt)}</td>
-                          <td className="px-4 py-3">
-                            <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
-                              Active
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <p className="text-gray-500 text-sm text-center py-8">No subscribers yet</p>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 className="text-lg font-bold text-gray-800 mb-4">Latest Orders</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b bg-gray-50">
+                <th className="px-4 py-3 text-sm font-semibold text-gray-600">Order ID</th>
+                <th className="px-4 py-3 text-sm font-semibold text-gray-600">Date</th>
+                <th className="px-4 py-3 text-sm font-semibold text-gray-600">Customer</th>
+                 <th className="px-4 py-3 text-sm font-semibold text-gray-600">Amount</th>
+                <th className="px-4 py-3 text-sm font-semibold text-gray-600">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stats.latestOrders.map((order) => (
+                <tr key={order._id} className="border-b hover:bg-gray-50">
+                  <td className="px-4 py-3 text-sm text-gray-500 font-mono">#{order._id.slice(-6)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">{new Date(order.date).toLocaleDateString()}</td>
+                  <td className="px-4 py-3 text-sm text-gray-800">{order.address.firstName} {order.address.lastName}</td>
+                   <td className="px-4 py-3 text-sm font-medium text-gray-900">{currency}{order.amount}</td>
+                  <td className="px-4 py-3 text-sm">
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                        order.status === 'Shipped' ? 'bg-blue-100 text-blue-700' :
+                        order.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
+                        'bg-yellow-100 text-yellow-700'
+                    }`}>
+                      {order.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {stats.latestOrders.length === 0 && (
+                  <tr>
+                      <td colSpan="5" className="text-center py-4 text-gray-500">No orders found</td>
+                  </tr>
               )}
-            </div>
-          )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
