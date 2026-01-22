@@ -11,7 +11,9 @@ const orderSchema = new mongoose.Schema({
     date: { type: Date, required: true },
     flutterwaveRef: { type: String },
     deliveryFee: { type: Number, default: 0 },
-    trackingUrl: { type: String, default: null }
+    trackingUrl: { type: String, default: null },
+    shippingId: { type: String, default: null },
+    carrier: { type: String, default: null }
 })
 
 const orderModel = mongoose.models.order || mongoose.model('order', orderSchema)

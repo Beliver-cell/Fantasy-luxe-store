@@ -4,7 +4,7 @@ import settingsModel from "../models/settingsModel.js";
 import productModel from "../models/productModel.js";
 import axios from "axios";
 import ENV from "../config/serverConfig.js";
-import { sendOrderPlacedEmail, sendPaymentSuccessEmail } from "../config/email.js";
+import { sendOrderPlacedEmail, sendPaymentSuccessEmail, sendOrderShippedEmail, sendOrderDeliveredEmail } from "../config/email.js";
 
 const currency = ENV.CURRENCY;
 const deliveryCharge = ENV.DELIVERY_CHARGE;
@@ -336,23 +336,32 @@ const userOrders = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   try {
-    const { orderId, status, trackingUrl } = req.body;
+    const { orderId, status, trackingUrl, shippingId, carrier } = req.body;
     
     // Create update object
     const updateData = { status };
-    if (trackingUrl) {
-        updateData.trackingUrl = trackingUrl;
-    }
+    if (trackingUrl) updateData.trackingUrl = trackingUrl;
+    if (shippingId) updateData.shippingId = shippingId;
+    if (carrier) updateData.carrier = carrier;
 
     const order = await orderModel.findByIdAndUpdate(orderId, updateData, { new: true });
     
-    if (status === 'Shipped' && order) {
+    if (order) {
         const user = await userModel.findById(order.userId);
-        // Fallback to order address email if user not found or no email (though user should exist)
         const email = order.address?.email || user?.email;
         
         if (email) {
-            await sendOrderShippedEmail(email, orderId, trackingUrl || order.trackingUrl);
+            if (status === 'Shipped') {
+                await sendOrderShippedEmail(
+                    email, 
+                    orderId, 
+                    trackingUrl || order.trackingUrl,
+                    shippingId || order.shippingId,
+                    carrier || order.carrier
+                );
+            } else if (status === 'Delivered') {
+                await sendOrderDeliveredEmail(email, orderId);
+            }
         }
     }
 

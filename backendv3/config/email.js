@@ -364,7 +364,7 @@ export const sendPaymentSuccessEmail = async (email, orderId, amount, deliveryIn
 };
 
 
-export const sendOrderShippedEmail = async (email, orderId, trackingUrl) => {
+export const sendOrderShippedEmail = async (email, orderId, trackingUrl, shippingId, carrier) => {
   const htmlContent = `
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
       <div style='background-color: #000; color: white; padding: 20px; text-align: center;'>
@@ -374,6 +374,11 @@ export const sendOrderShippedEmail = async (email, orderId, trackingUrl) => {
         <h2 style='color: #000;'>Your Order Has Shipped!</h2>
         <p>Good news! Your order ID: <strong>${orderId}</strong> is on its way.</p>
         
+        <div style="background-color: #fff; padding: 15px; margin: 20px 0; border: 1px solid #ddd; border-radius: 5px;">
+            ${carrier ? `<p style="margin: 5px 0;"><strong>Carrier:</strong> ${carrier}</p>` : ''}
+            ${shippingId ? `<p style="margin: 5px 0;"><strong>Tracking Number:</strong> ${shippingId}</p>` : ''}
+        </div>
+
         ${trackingUrl ? `
         <div style='text-align: center; margin: 30px 0;'>
           <a href='${trackingUrl}' style='background-color: #000; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Track Your Order</a>
@@ -415,6 +420,60 @@ export const sendOrderShippedEmail = async (email, orderId, trackingUrl) => {
     }
   } catch (error) {
     console.error('Order shipped email error:', error.message);
+  }
+  return false;
+};
+
+export const sendOrderDeliveredEmail = async (email, orderId) => {
+  const htmlContent = `
+    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+      <div style='background-color: #000; color: white; padding: 20px; text-align: center;'>
+        <h1>Fantasy Luxe</h1>
+      </div>
+      <div style='padding: 20px; background-color: #f9f9f9;'>
+        <h2 style='color: #008000;'>Order Delivered!</h2>
+        <p>Your order ID: <strong>${orderId}</strong> has been marked as delivered.</p>
+        <p>We hope you love your purchase!</p>
+        
+        <p style="margin-top: 30px;">If you haven't received it yet, please contact our support immediately.</p>
+        
+        <div style='text-align: center; margin: 30px 0;'>
+            <a href='${ENV.FRONTEND_URL}/contact' style='display: inline-block; border: 1px solid #000; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Contact Support</a>
+        </div>
+
+        <p>Thank you for shopping with us!</p>
+      </div>
+      <div style='background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #999;'>
+        <p>© 2025 Fantasy Luxe. All rights reserved.</p>
+      </div>
+    </div>
+  `;
+
+  try {
+    if (resend) {
+      await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: email,
+        subject: 'Order Delivered! #' + orderId,
+        html: htmlContent
+      });
+      console.log('Order delivered email sent via Resend to:', email);
+      return true;
+    }
+
+    const transporter = createTransporter();
+    if (transporter) {
+      await transporter.sendMail({
+        from: ENV.EMAIL_USER,
+        to: email,
+        subject: 'Order Delivered! #' + orderId,
+        html: htmlContent
+      });
+      console.log('Order delivered email sent via SMTP to:', email);
+      return true;
+    }
+  } catch (error) {
+    console.error('Order delivered email error:', error.message);
   }
   return false;
 };

@@ -214,7 +214,7 @@ const Orders = () => {
                   <button onClick={loadOrderData} className="border border-gray-200 px-4 py-2 text-sm font-medium rounded-sm cursor-pointer hover:bg-gray-50">
                     Refresh Status
                   </button>
-                  {order.trackingUrl && (
+                  {order.trackingUrl && order.status !== 'Delivered' && (
                       <a 
                         href={order.trackingUrl} 
                         target="_blank" 
