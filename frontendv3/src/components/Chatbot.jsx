@@ -18,11 +18,11 @@ const Chatbot = () => {
     },
     'returns': {
       keywords: ['return', 'exchange', 'refund', 'wrong', 'damaged', 'back'],
-      response: 'Please refer to our terms and conditions for return policies. For assistance, contact us on WhatsApp: https://wa.me/1234567890'
+      response: 'Please refer to our terms and conditions for return policies. For assistance, contact us on WhatsApp: https://wa.me/2348128005603'
     },
     'terms': {
       keywords: ['terms', 'conditions', 'policy', 'rules'],
-      response: 'Our terms and conditions outline all policies including returns, shipping, and payments. For detailed information, contact us on WhatsApp: https://wa.me/1234567890'
+      response: 'Our terms and conditions outline all policies including returns, shipping, and payments. For detailed information, contact us on WhatsApp: https://wa.me/2348128005603'
     },
     'sizes': {
       keywords: ['size', 'fit', 'measurement', 'guide', 'sizing'],
@@ -42,7 +42,7 @@ const Chatbot = () => {
     },
     'contact': {
       keywords: ['contact', 'support', 'help', 'email', 'call', 'assistance'],
-      response: 'We\'re here to help! You can chat with us right here, or contact us on WhatsApp for detailed inquiries: https://wa.me/1234567890. Our team responds within 24 hours. Your satisfaction is our priority!'
+      response: 'We\'re here to help! You can chat with us right here, or contact us on WhatsApp for detailed inquiries: https://wa.me/2348128005603. Our team responds within 24 hours. Your satisfaction is our priority!'
     }
   };
 
@@ -55,7 +55,7 @@ const Chatbot = () => {
       }
     }
     
-    return "I appreciate your question! 😊 For more specific inquiries, please visit our FAQ section or contact our support team on WhatsApp: https://wa.me/1234567890. We typically respond within 24 hours. How else can I help?";
+    return "I appreciate your question! 😊 For more specific inquiries, please visit our FAQ section or contact our support team on WhatsApp: https://wa.me/2348128005603. We typically respond within 24 hours. How else can I help?";
   };
 
   const handleSendMessage = () => {
@@ -101,7 +101,7 @@ const Chatbot = () => {
             </div>
             <div className="flex items-center gap-2">
               <a
-                href="https://wa.me/message/66VUVZGOMBD7F1"
+                href="https://wa.me/2348128005603"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-green-400 hover:text-green-300 transition text-xl"
@@ -161,7 +161,7 @@ const Chatbot = () => {
                 Payment
               </button>
               <a
-                href="https://wa.me/1234567890"
+                href="https://wa.me/2348128005603"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded transition flex items-center gap-1"
