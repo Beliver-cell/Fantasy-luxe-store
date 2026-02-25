@@ -78,7 +78,7 @@ const Product = () => {
       },
       offers: {
         "@type": "Offer",
-        url: `https://fantasyluxe.com/products/${productData._id}`,
+        url: `https://fantasyluxe.store/products/${productData._id}`,
         priceCurrency: "NGN",
         price: productData.price,
         priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
@@ -89,7 +89,7 @@ const Product = () => {
         seller: {
           "@type": "Organization",
           name: "Fantasy Luxe",
-          url: "https://fantasyluxe.com",
+          url: "https://fantasyluxe.store",
         },
         shippingDetails: {
           "@type": "OfferShippingDetails",
@@ -156,25 +156,25 @@ const Product = () => {
           "@type": "ListItem",
           position: 1,
           name: "Home",
-          item: "https://fantasyluxe.com",
+          item: "https://fantasyluxe.store",
         },
         {
           "@type": "ListItem",
           position: 2,
           name: "Collections",
-          item: "https://fantasyluxe.com/collections",
+          item: "https://fantasyluxe.store/collections",
         },
         {
           "@type": "ListItem",
           position: 3,
           name: productData.category,
-          item: `https://fantasyluxe.com/collections?category=${productData.category}`,
+          item: `https://fantasyluxe.store/collections?category=${productData.category}`,
         },
         {
           "@type": "ListItem",
           position: 4,
           name: productData.name,
-          item: `https://fantasyluxe.com/products/${productData._id}`,
+          item: `https://fantasyluxe.store/products/${productData._id}`,
         },
       ],
     };

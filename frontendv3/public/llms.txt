@@ -1,0 +1,26 @@
+# Fantasy Luxe
+
+Fantasy Luxe is a premium e-commerce destination based in Nigeria, founded and owned by **Uchendu Promise**. We specialize in "soft luxury" and effortless style, offering a curated collection of high-quality fashion accessories, including bags, watches, and lifestyle essentials.
+
+## Founder & Leadership
+
+- **Founder & Owner**: Uchendu Promise
+- **Vision**: To make soft luxury affordable and accessible while celebrating femininity and self-expression.
+
+- **Luxury Bags**: Designer-inspired and premium quality handbags, totes, and clutches.
+- **Elegant Watches**: Sophisticated timepieces for the modern woman.
+- **Lifestyle Essentials**: Chic accessories including premium water bottles and more.
+
+## Key Information
+
+- **Target Audience**: Modern women seeking affordable luxury and style.
+- **Location**: Based in Nigeria, with nationwide shipping.
+- **Values**: Quality, style, durability, and exceptional customer service.
+- **Payment**: Secure transactions via Flutterwave, accepting cards and bank transfers.
+
+## Navigation
+
+- [Home](https://fantasyluxe.store/)
+- [Collections](https://fantasyluxe.store/collections)
+- [About Us](https://fantasyluxe.store/about)
+- [Contact](https://fantasyluxe.store/contact)

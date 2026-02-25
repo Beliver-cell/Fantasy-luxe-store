@@ -124,14 +124,14 @@ const Collection = ({ initialCategory, initialSubCategory }) => {
   return (
     <>
       <Helmet>
-        <title>Shop Fantasy Luxe Collection - Premium Fashion & Luxury Brands</title>
-        <meta name="description" content="Browse our exclusive collection of premium fashion, luxury clothing, and designer accessories. Filter by category, price, and find your perfect style at Fantasy Luxe." />
-        <meta name="keywords" content="shop collection, luxury fashion, designer clothing, fashion products, premium brands, exclusive items, Fantasy Luxe collection" />
+        <title>Shop Fantasy Luxe Collection - Premium Luxury Fashion by Uchendu Promise</title>
+        <meta name="description" content="Explore the exclusive collections of Fantasy Luxe, founded by Uchendu Promise. Discover high-quality fashion, luxury bags, and elegant watches designed for effortless style." />
+        <meta name="keywords" content="Uchendu Promise, shop collection, luxury fashion nigeria, designer clothing, premium accessories, exclusive fashion, Fantasy Luxe store" />
         <link rel="canonical" href="https://fantasyluxe.store/collections" />
 
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Shop Fantasy Luxe Collection - Premium Fashion" />
-        <meta property="og:description" content="Browse our exclusive collection of premium fashion and luxury items" />
+        <meta property="og:title" content="Fantasy Luxe Collections - Premium Luxury Fashion" />
+        <meta property="og:description" content="Discover curated collections of premium fashion and luxury accessories by Uchendu Promise." />
         <meta property="og:url" content="https://fantasyluxe.store/collections" />
 
         <script type="application/ld+json">

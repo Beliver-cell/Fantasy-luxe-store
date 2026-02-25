@@ -9,31 +9,36 @@ const About = () => {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "About Fantasy Luxe",
-    "url": "https://fantasyluxe.com/about",
+    "url": "https://fantasyluxe.store/about",
     "description": "Learn about Fantasy Luxe - Your premier destination for luxury fashion and accessories",
     "mainEntity": {
       "@type": "Organization",
       "name": "Fantasy Luxe",
       "description": "Premium luxury fashion and accessories store offering carefully curated collections",
-      "url": "https://fantasyluxe.com",
+      "url": "https://fantasyluxe.store",
       "foundingDate": "2024",
+      "founder": {
+        "@type": "Person",
+        "name": "Uchendu Promise",
+        "jobTitle": "Founder & CEO"
+      },
       "slogan": "Pretty things for pretty souls",
-      "knowsAbout": ["Luxury Fashion", "Designer Clothing", "Premium Accessories", "Men's Fashion", "Women's Fashion", "Kids Fashion"]
+      "knowsAbout": ["Luxury Fashion", "Designer Clothing", "Premium Accessories", "Women's Fashion"]
     }
   };
 
   return (
     <>
       <Helmet>
-        <title>About Fantasy Luxe - Our Story, Mission & Values | Premium Fashion</title>
-        <meta name="description" content="Discover Fantasy Luxe's story - Your premier destination for luxury fashion. Learn about our commitment to quality, exceptional customer service, and carefully curated collections of premium fashion and accessories." />
-        <meta name="keywords" content="about Fantasy Luxe, luxury fashion store, premium clothing brand, fashion company, quality assurance, customer service, designer fashion, about us" />
-        <link rel="canonical" href="https://fantasyluxe.com/about" />
+        <title>About Fantasy Luxe - Premium Fashion & Founder Uchendu Promise</title>
+        <meta name="description" content="Learn about Fantasy Luxe, founded by Uchendu Promise. Discover our commitment to soft luxury, quality craftsmanship, and exceptional customer service in Nigeria." />
+        <meta name="keywords" content="Uchendu Promise, about Fantasy Luxe, luxury fashion founder, women in business nigeria, premium clothing brand, our story" />
+        <link rel="canonical" href="https://fantasyluxe.store/about" />
         
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="About Fantasy Luxe - Our Story & Mission" />
-        <meta property="og:description" content="Discover Fantasy Luxe's commitment to quality and exceptional customer service in luxury fashion" />
-        <meta property="og:url" content="https://fantasyluxe.com/about" />
+        <meta property="og:title" content="About Fantasy Luxe & Founder Uchendu Promise" />
+        <meta property="og:description" content="Discover the visionary leadership and mission behind Fantasy Luxe's soft luxury collections." />
+        <meta property="og:url" content="https://fantasyluxe.store/about" />
         <meta property="og:site_name" content="Fantasy Luxe" />
         
         <meta name="twitter:card" content="summary_large_image" />
