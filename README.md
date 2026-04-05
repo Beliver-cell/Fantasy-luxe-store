@@ -74,7 +74,7 @@ JWT_SECRET=your_jwt_secret
 CLOUDINARY_NAME=your_cloudinary_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_SECRET_KEY=your_cloudinary_secret
-STRIPE_SECRET_KEY=your_stripe_secret_key
+FLUTTERWAVE_SECRET_KEY=your_stripe_secret_key
 ```
 
 Start the backend server:
@@ -148,7 +148,7 @@ npm run dev
 - **Database**: MongoDB
 - **Authentication**: JWT
 - **Image Storage**: Cloudinary
-- **Payment Processing**: Stripe
+- **Payment Processing**: Flutterwave
 - **State Management**: React Context
 - **Deployment**: Vercel
 
@@ -169,7 +169,7 @@ Three separate .env files are required:
 - Database connection
 - JWT secret
 - Cloudinary credentials
-- Stripe API keys
+- Flutterwave API keys
 - Admin credentials
 
 ### Frontend (.env)
@@ -197,4 +197,4 @@ This project is proprietary and confidential. All rights reserved.
 
 ---
 
-Built with ♥️ by Fantasy Luxe Team
+Built with ♥️ by Beliver-cell
