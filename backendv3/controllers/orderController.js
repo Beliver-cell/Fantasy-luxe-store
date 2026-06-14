@@ -67,7 +67,29 @@ const placeOrderFlutterwave = async (req, res) => {
     }
 
     // Get delivery fee from request (calculated on frontend) or default to 0
-    const deliveryFee = req.body.deliveryFee !== undefined ? Number(req.body.deliveryFee) : 0;
+    // Prefer server-side calculation: if frontend provided a deliveryFee use it, otherwise determine from settings
+    let deliveryFee = req.body.deliveryFee !== undefined ? Number(req.body.deliveryFee) : undefined;
+
+    if (deliveryFee === undefined) {
+      const settings = await settingsModel.findOne();
+      // If free delivery applies, set to 0
+      const amt = Number(amount) || 0;
+      if (settings?.freeDeliveryEnabled && settings?.freeDeliveryThreshold && amt >= settings.freeDeliveryThreshold) {
+        deliveryFee = 0;
+      } else {
+        // Determine by address state/region
+        const addrState = (address.state || address.region || address.stateProvince || '').toString().trim().toLowerCase();
+        let matched = null;
+        if (Array.isArray(settings?.regions)) {
+          matched = settings.regions.find(r => r && r.state && r.active && r.state.toString().trim().toLowerCase() === addrState);
+        }
+        if (matched) {
+          deliveryFee = Number(matched.fee || 0);
+        } else {
+          deliveryFee = Number(settings?.deliveryFee ?? deliveryCharge ?? 0);
+        }
+      }
+    }
 
     const orderData = {
       userId,

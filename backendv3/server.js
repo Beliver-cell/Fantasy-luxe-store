@@ -5,6 +5,8 @@ import rateLimit from 'express-rate-limit'
 import ENV from './config/serverConfig.js'
 import connectDB from './config/mongodb.js'
 import connectCloudinary from './config/cloudinary.js'
+import axios from 'axios'
+import settingsModel from './models/settingsModel.js'
 import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRoute.js'
 import cartRouter from './routes/cartRoute.js'
@@ -293,6 +295,36 @@ if (!process.env.VERCEL) {
   const port = ENV.PORT || 8000;
   app.listen(port, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${port}`);
+    // Keep-alive / wake-up ping to prevent sleeping.
+    // Preference order: DB `settings.keepAliveUrl` -> `KEEP_ALIVE_URL` env -> hardcoded default -> localhost health
+    const HARDCODED_KEEP_ALIVE = 'https://fantasyluxe.store/health';
+
+    const determineKeepAlive = async () => {
+      try {
+        // Ensure DB connections for reading settings
+        await initializeConnections();
+        const settings = await settingsModel.findOne();
+        return (settings && settings.keepAliveUrl) || process.env.KEEP_ALIVE_URL || HARDCODED_KEEP_ALIVE || `http://localhost:${port}/health`;
+      } catch (err) {
+        // If DB isn't available, fall back to env/hardcoded
+        return process.env.KEEP_ALIVE_URL || HARDCODED_KEEP_ALIVE || `http://localhost:${port}/health`;
+      }
+    };
+
+    const wakeUp = async () => {
+      const keepAliveUrl = await determineKeepAlive();
+      try {
+        await axios.get(keepAliveUrl, { timeout: 5000 });
+        console.log(`Keep-alive ping successful: ${keepAliveUrl}`);
+      } catch (err) {
+        console.warn(`Keep-alive ping failed: ${err && err.message ? err.message : err}`);
+      }
+    };
+
+    // Initial ping shortly after start, then every 8 minutes.
+    setTimeout(wakeUp, 5000);
+    const intervalMs = 8 * 60 * 1000; // 8 minutes
+    setInterval(wakeUp, intervalMs);
   });
 }
 

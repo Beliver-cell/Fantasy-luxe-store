@@ -19,6 +19,10 @@ const getSettings = async (req, res) => {
     if (settingsObj.deliveryFee === undefined || settingsObj.deliveryFee === null) {
       settingsObj.deliveryFee = ENV.DELIVERY_CHARGE || 0;
     }
+    // Ensure regions array exists for older documents
+    if (!Array.isArray(settingsObj.regions)) settingsObj.regions = [];
+    // Ensure keepAliveUrl exists
+    if (!settingsObj.keepAliveUrl) settingsObj.keepAliveUrl = ENV.KEEP_ALIVE_URL || 'https://fantasyluxe.store/health';
     
     res.json({ success: true, settings: settingsObj });
   } catch (error) {
@@ -40,6 +44,19 @@ const updateSettings = async (req, res) => {
     if (currency !== undefined) settings.currency = currency;
     if (freeDeliveryEnabled !== undefined) settings.freeDeliveryEnabled = freeDeliveryEnabled;
     if (freeDeliveryThreshold !== undefined) settings.freeDeliveryThreshold = freeDeliveryThreshold;
+
+    // Allow updating regions from admin UI
+    if (Array.isArray(req.body.regions)) {
+      // Normalize entries: keep required fields only
+      settings.regions = req.body.regions.map(r => ({
+        state: (r.state || '').trim(),
+        fee: Number(r.fee || 0),
+        active: r.active === undefined ? true : Boolean(r.active)
+      }));
+    }
+    if (req.body.keepAliveUrl !== undefined) {
+      settings.keepAliveUrl = String(req.body.keepAliveUrl || '').trim();
+    }
 
     if (req.body.deliveryInfo) {
       settings.deliveryInfo = {

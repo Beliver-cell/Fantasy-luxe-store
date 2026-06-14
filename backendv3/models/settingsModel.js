@@ -6,6 +6,22 @@ const settingsSchema = new mongoose.Schema({
     default: 0,
     min: 0
   },
+  // Region-specific delivery fees. Example: { state: 'Lagos', fee: 1500, active: true }
+  regions: {
+    type: [
+      {
+        state: { type: String, required: true },
+        fee: { type: Number, default: 0, min: 0 },
+        active: { type: Boolean, default: true }
+      }
+    ],
+    default: []
+  },
+  // Optional keep-alive URL that the server can use for wake-up pings.
+  keepAliveUrl: {
+    type: String,
+    default: 'https://fantasyluxe.store/health'
+  },
   currency: {
     type: String,
     default: 'NGN'
