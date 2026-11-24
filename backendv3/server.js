@@ -194,7 +194,9 @@ app.get('/sitemap.xml', async (req, res) => {
     const products = await productModel.find({});
     const categories = await categoryModel.find({});
     
-    const baseUrl = ENV.FRONTEND_URL;
+    const baseUrl = (ENV.FRONTEND_URL && !ENV.FRONTEND_URL.includes('localhost')) 
+      ? ENV.FRONTEND_URL.replace(/\/$/, '') 
+      : 'https://fantasyluxe.store';
     const today = new Date().toISOString().split('T')[0];
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>

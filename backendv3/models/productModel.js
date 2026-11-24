@@ -12,6 +12,9 @@ const productSchema = new mongoose.Schema({
     colors: { type: [String], default: [] },
     bestseller : { type: Boolean},
     stock: { type: Number, default: null, min: 0 },
+    keywords: { type: [String], default: [] },
+    seoTitle: { type: String, default: '' },
+    seoDescription: { type: String, default: '' },
     date: { type: Number, required: true }
 })
 

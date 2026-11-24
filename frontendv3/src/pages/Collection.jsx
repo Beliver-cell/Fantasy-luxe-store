@@ -121,25 +121,57 @@ const Collection = ({ initialCategory, initialSubCategory }) => {
     sortProduct();
   }, [sortType]);
 
+  const activeCategory = category.length === 1 ? category[0] : (category.length > 1 ? category.join(' & ') : '');
+  const activeSubCategory = subCategory.length === 1 ? subCategory[0] : '';
+  const categoryTitle = activeCategory
+    ? `${activeCategory}${activeSubCategory ? ` ${activeSubCategory}` : ''} Collection | Fantasy Luxe - Luxury Fashion`
+    : 'Shop Fantasy Luxe Collections - Premium Luxury Fashion';
+  const categoryDescription = activeCategory
+    ? `Discover our exclusive ${activeCategory}${activeSubCategory ? ` ${activeSubCategory}` : ''} luxury collection at Fantasy Luxe. Shop authentic designer fashion, premium bags, and luxury accessories with fast delivery across Nigeria.`
+    : 'Explore the exclusive collections of Fantasy Luxe. Discover high-quality fashion, luxury bags, and elegant watches designed for effortless style.';
+  const categoryKeywords = [
+    activeCategory,
+    activeSubCategory,
+    activeCategory && `luxury ${activeCategory.toLowerCase()}`,
+    activeCategory && `designer ${activeCategory.toLowerCase()} nigeria`,
+    activeSubCategory && `buy ${activeSubCategory.toLowerCase()} online`,
+    'Fantasy Luxe store',
+    'luxury fashion nigeria',
+    'designer accessories nigeria'
+  ].filter(Boolean).join(', ');
+  const categoryImage = filterProduct.length > 0 && filterProduct[0]?.images?.[0]
+    ? filterProduct[0].images[0]
+    : 'https://fantasyluxe.store/logo.jpg';
+  const canonicalUrl = `https://fantasyluxe.store/collections${category.length === 1 ? `?category=${encodeURIComponent(category[0])}` : ''}`;
+
   return (
     <>
       <Helmet>
-        <title>Shop Fantasy Luxe Collection - Premium Luxury Fashion by Uchendu Promise</title>
-        <meta name="description" content="Explore the exclusive collections of Fantasy Luxe, founded by Uchendu Promise. Discover high-quality fashion, luxury bags, and elegant watches designed for effortless style." />
-        <meta name="keywords" content="Uchendu Promise, shop collection, luxury fashion nigeria, designer clothing, premium accessories, exclusive fashion, Fantasy Luxe store" />
-        <link rel="canonical" href="https://fantasyluxe.store/collections" />
+        <title>{categoryTitle}</title>
+        <meta name="title" content={categoryTitle} />
+        <meta name="description" content={categoryDescription} />
+        <meta name="keywords" content={categoryKeywords} />
+        <link rel="canonical" href={canonicalUrl} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Fantasy Luxe Collections - Premium Luxury Fashion" />
-        <meta property="og:description" content="Discover curated collections of premium fashion and luxury accessories by Uchendu Promise." />
-        <meta property="og:url" content="https://fantasyluxe.store/collections" />
+        <meta property="og:title" content={categoryTitle} />
+        <meta property="og:description" content={categoryDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={categoryImage} />
+        <meta property="og:image:alt" content={categoryTitle} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={categoryTitle} />
+        <meta name="twitter:description" content={categoryDescription} />
+        <meta name="twitter:image" content={categoryImage} />
 
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            "name": "Fantasy Luxe Collections",
-            "url": "https://fantasyluxe.store/collections",
+            "name": categoryTitle,
+            "description": categoryDescription,
+            "url": canonicalUrl,
             "numberOfItems": filterProduct.length,
             "mainEntity": {
               "@type": "ItemList",
@@ -147,7 +179,8 @@ const Collection = ({ initialCategory, initialSubCategory }) => {
                 "@type": "ListItem",
                 "position": index + 1,
                 "name": product.name,
-                "url": `https://fantasyluxe.store/products/${product._id}`
+                "url": `https://fantasyluxe.store/products/${product._id}`,
+                "image": product.images?.[0]
               }))
             }
           })}

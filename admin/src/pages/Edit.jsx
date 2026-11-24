@@ -79,6 +79,8 @@ const Edit = ({token}) => {
   const [customSize, setCustomSize] = useState("")
   const [customColor, setCustomColor] = useState("")
   const [stock, setStock] = useState("")
+  const [customKeywords, setCustomKeywords] = useState("")
+  const [previewKeywords, setPreviewKeywords] = useState([])
   const [loading, setLoading] = useState(false)
 
   const [mainCategories, setMainCategories] = useState([]);
@@ -127,6 +129,9 @@ const Edit = ({token}) => {
                 setBestseller(p.bestseller);
                 setStock(p.stock === null ? "" : p.stock); // If null, show empty (unlimited), else show number
                 setCurrentImages(p.images || []);
+                if (p.keywords && p.keywords.length > 0) {
+                    setCustomKeywords(Array.isArray(p.keywords) ? p.keywords.join(', ') : p.keywords);
+                }
             } else {
                 toast.error("Failed to load product");
                 navigate('/list');
@@ -138,6 +143,30 @@ const Edit = ({token}) => {
     }
     fetchProduct();
   }, [productId, token]);
+
+  // Extract keywords locally for instant preview as user types description
+  useEffect(() => {
+    if (!description.trim() && !name.trim()) {
+      setPreviewKeywords([]);
+      return;
+    }
+    const stopWords = new Set(['a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'with', 'this', 'our', 'your', 'item', 'product', 'like', 'just']);
+    const cleanDesc = description.toLowerCase().replace(/<[^>]*>/g, ' ').replace(/[^\w\s]/g, ' ');
+    const words = cleanDesc.split(/\s+/).filter(w => w.length >= 3 && !stopWords.has(w));
+    const wordCounts = {};
+    words.forEach(w => { wordCounts[w] = (wordCounts[w] || 0) + 1; });
+    const topWords = Object.keys(wordCounts).sort((a, b) => wordCounts[b] - wordCounts[a]).slice(0, 10);
+
+    const generated = [
+      name.trim(),
+      category && subCategory ? `${category} ${subCategory}` : category,
+      'Fantasy Luxe',
+      'Luxury Fashion Nigeria',
+      ...topWords
+    ].filter(Boolean);
+
+    setPreviewKeywords(Array.from(new Set(generated)));
+  }, [name, description, category, subCategory]);
 
   const toggleSize = (size) => {
     setSizes(prev => prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]);
@@ -184,6 +213,12 @@ const Edit = ({token}) => {
       formData.append("colors", JSON.stringify(colors))
       if (stock !== "") formData.append("stock", stock)
       else formData.append("stock", "") // Explicitly send empty string to mean "remove limit" if backend supports it, or handle nicely. My backend check checks for !== '' so if I send empty it becomes null.
+
+      if (customKeywords.trim()) {
+        formData.append("keywords", customKeywords.trim())
+      } else if (previewKeywords.length > 0) {
+        formData.append("keywords", previewKeywords.join(', '))
+      }
 
       if (image1) formData.append("image1", image1)
       if (image2) formData.append("image2", image2)
@@ -244,6 +279,41 @@ const Edit = ({token}) => {
     <div className='w-full'>
       <p className='mb-2'>Product description</p>
       <textarea onChange={(e)=> setDescription(e.target.value)} value={description} className='w-full max-w-[500px] px-3 py-2 border rounded min-h-[100px]' placeholder='Write description here' required/>
+      
+      {/* Live SEO Keywords Preview */}
+      <div className='w-full max-w-[500px] mt-2 p-3 bg-gray-50 border rounded text-xs'>
+        <div className='flex items-center justify-between mb-1'>
+          <span className='font-semibold text-gray-700'>🔍 Auto-Generated SEO Keywords (from description):</span>
+          <span className='text-[10px] text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-200 font-medium'>
+            Google Indexing Ready
+          </span>
+        </div>
+        {previewKeywords.length > 0 ? (
+          <div className='flex flex-wrap gap-1 mt-1.5'>
+            {previewKeywords.map((kw, i) => (
+              <span key={i} className='bg-white border border-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-[11px] shadow-2xs'>
+                {kw}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className='text-gray-400 italic text-[11px] mt-1'>
+            Type a product description to automatically extract keywords for Google Search Console &amp; AI models.
+          </p>
+        )}
+      </div>
+
+      {/* Optional Custom Keywords Input */}
+      <div className='w-full max-w-[500px] mt-2'>
+        <p className='text-xs text-gray-600 mb-1'>Custom SEO Keywords (Optional, comma-separated)</p>
+        <input 
+          onChange={(e) => setCustomKeywords(e.target.value)} 
+          value={customKeywords} 
+          className='w-full px-3 py-1.5 border rounded text-xs' 
+          type="text" 
+          placeholder="e.g. vintage tote, gold hardware, luxury gift" 
+        />
+      </div>
     </div>
     <div className='flex flex-col sm:flex-row gap-4 w-full'>
 

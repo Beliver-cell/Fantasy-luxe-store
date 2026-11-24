@@ -130,9 +130,9 @@ export const sendResetPasswordOTP = async (email, otp) => {
     </div>
   `;
 
-  try {
-    // Try Resend first if configured
-    if (resend) {
+  // 1. Try Resend first if configured
+  if (resend) {
+    try {
       const { data, error } = await resend.emails.send({
         from: SENDER_EMAIL,
         to: email,
@@ -140,34 +140,121 @@ export const sendResetPasswordOTP = async (email, otp) => {
         html: htmlContent
       });
 
-      if (error) {
-        console.error('Resend error:', error);
-        throw new Error(error.message);
+      if (!error) {
+        console.log('Password reset email sent via Resend to:', email);
+        return true;
       }
+      console.warn('Resend failed for reset password, attempting SMTP fallback:', error.message || error);
+    } catch (resendError) {
+      console.warn('Resend error for reset password, attempting SMTP fallback:', resendError.message);
+    }
+  }
 
-      console.log('Password reset email sent via Resend to:', email);
+  // 2. Fallback to nodemailer (Gmail/SMTP)
+  try {
+    const transporter = createTransporter();
+    if (transporter) {
+      await transporter.sendMail({
+        from: ENV.EMAIL_USER,
+        to: email,
+        subject: 'Your Fantasy Luxe Password Reset Code',
+        html: htmlContent
+      });
+      console.log('Password reset email sent via SMTP to:', email);
       return true;
     }
-
-    // Fallback to nodemailer (Gmail/SMTP)
-    const transporter = createTransporter();
-    if (!transporter) {
-      console.error('Email transporter not configured');
-      return false;
-    }
-    
-    await transporter.sendMail({
-      from: ENV.EMAIL_USER,
-      to: email,
-      subject: 'Your Fantasy Luxe Password Reset Code',
-      html: htmlContent
-    });
-    console.log('Password reset email sent via SMTP to:', email);
-    return true;
-  } catch (error) {
-    console.error('Email error:', error.message);
-    return false;
+  } catch (smtpError) {
+    console.error('SMTP error for reset password:', smtpError.message);
   }
+
+  // 3. Dev mode fallback logging
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[DEV OTP NOTIFICATION] User password reset OTP for ${email}: ${otp}`);
+    return true;
+  }
+
+  return false;
+};
+
+export const sendAdminResetPasswordOTP = async (email, otp) => {
+  const htmlContent = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
+      <div style="background: linear-gradient(135deg, #111827 0%, #000000 100%); color: #ffffff; padding: 32px 24px; text-align: center;">
+        <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">Fantasy Luxe</h1>
+        <p style="margin: 8px 0 0; font-size: 13px; color: #9ca3af; letter-spacing: 1.5px; text-transform: uppercase;">Administrator Security Portal</p>
+      </div>
+      <div style="padding: 32px 24px; background-color: #ffffff;">
+        <h2 style="margin: 0 0 16px; font-size: 20px; color: #111827; font-weight: 600;">Admin Password Reset Request</h2>
+        <p style="margin: 0 0 16px; color: #4b5563; font-size: 15px; line-height: 1.6;">
+          We received a request to reset the password for your Fantasy Luxe Administrator account (<strong style="color: #111827;">${email}</strong>).
+        </p>
+        <p style="margin: 0 0 24px; color: #4b5563; font-size: 15px; line-height: 1.6;">
+          Use the 6-digit verification code below to authorize your password reset:
+        </p>
+        <div style="background-color: #0f172a; color: #ffffff; padding: 24px; text-align: center; margin: 24px 0; border-radius: 8px;">
+          <div style="font-size: 40px; font-weight: 700; letter-spacing: 8px; font-family: monospace;">${otp}</div>
+          <p style="margin: 8px 0 0; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">One-Time Security Code</p>
+        </div>
+        <p style="color: #dc2626; font-size: 13px; font-weight: 500; margin: 16px 0 8px;">
+          ⏱ This code will expire in 10 minutes.
+        </p>
+        <div style="background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 12px 16px; margin-top: 20px; border-radius: 4px;">
+          <p style="margin: 0; color: #991b1b; font-size: 13px; line-height: 1.5;">
+            <strong>Security Alert:</strong> If you did not initiate this password reset, someone may be attempting to access your admin account. Please secure your account immediately.
+          </p>
+        </div>
+      </div>
+      <div style="background-color: #f9fafb; padding: 20px 24px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
+        <p style="margin: 0 0 4px;">© ${new Date().getFullYear()} Fantasy Luxe. All rights reserved.</p>
+        <p style="margin: 0; color: #9ca3af;">This is an automated administrative notification. Do not reply to this email.</p>
+      </div>
+    </div>
+  `;
+
+  // 1. Try Resend first if configured
+  if (resend) {
+    try {
+      const { data, error } = await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: email,
+        subject: 'Fantasy Luxe Admin - Password Reset Verification Code',
+        html: htmlContent
+      });
+
+      if (!error) {
+        console.log('Admin password reset email sent via Resend to:', email);
+        return true;
+      }
+      console.warn('Resend failed for admin reset password, attempting SMTP fallback:', error.message || error);
+    } catch (resendError) {
+      console.warn('Resend error for admin reset password, attempting SMTP fallback:', resendError.message);
+    }
+  }
+
+  // 2. Fallback to nodemailer (Gmail/SMTP)
+  try {
+    const transporter = createTransporter();
+    if (transporter) {
+      await transporter.sendMail({
+        from: ENV.EMAIL_USER,
+        to: email,
+        subject: 'Fantasy Luxe Admin - Password Reset Verification Code',
+        html: htmlContent
+      });
+      console.log('Admin password reset email sent via SMTP to:', email);
+      return true;
+    }
+  } catch (smtpError) {
+    console.error('SMTP error for admin reset password:', smtpError.message);
+  }
+
+  // 3. Dev mode fallback logging
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[DEV OTP NOTIFICATION] Admin password reset OTP for ${email}: ${otp}`);
+    return true;
+  }
+
+  return false;
 };
 
 export const sendSubscriptionConfirmation = async (email) => {

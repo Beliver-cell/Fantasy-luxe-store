@@ -1,5 +1,15 @@
 import express from 'express';
-import { listProducts, addProduct, removeProduct, singleProduct, removeCollection, updateProduct } from '../controllers/productController.js';
+import { 
+    listProducts, 
+    addProduct, 
+    removeProduct, 
+    singleProduct, 
+    removeCollection, 
+    updateProduct,
+    previewKeywords,
+    getSitemap,
+    backfillKeywords
+} from '../controllers/productController.js';
 import upload from '../middleware/multer.js';
 import adminAuth from '../middleware/adminAuth.js';
 
@@ -12,5 +22,8 @@ productRouter.post('/single', singleProduct);
 productRouter.post('/remove', adminAuth, removeProduct);
 productRouter.post('/remove-collection', adminAuth, removeCollection);
 productRouter.post('/update', adminAuth, upload.fields([{name:'image1', maxCount:1}, {name:'image2', maxCount:1}, {name:'image3', maxCount:1}, {name:'image4', maxCount:1}]), updateProduct);
+productRouter.post('/keywords-preview', previewKeywords);
+productRouter.get('/sitemap.xml', getSitemap);
+productRouter.post('/backfill-keywords', adminAuth, backfillKeywords);
 
 export default productRouter;

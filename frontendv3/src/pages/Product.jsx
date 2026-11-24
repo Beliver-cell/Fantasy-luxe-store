@@ -57,14 +57,64 @@ const Product = () => {
     }
   }, [productData]);
 
+  // Algorithmic keyword extraction from product description and attributes
+  const getProductKeywords = (product) => {
+    if (!product) return '';
+    if (product.keywords && Array.isArray(product.keywords) && product.keywords.length > 0) {
+      return product.keywords.join(', ');
+    }
+    if (typeof product.keywords === 'string' && product.keywords.trim()) {
+      return product.keywords;
+    }
+
+    // Dynamic keyword extraction from description
+    const stopWords = new Set([
+      'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he',
+      'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'was', 'were',
+      'will', 'with', 'this', 'your', 'our', 'all', 'can', 'item', 'product', 'like', 'just'
+    ]);
+    const cleanDesc = (product.description || '').toLowerCase().replace(/<[^>]*>/g, ' ').replace(/[^\w\s]/g, ' ');
+    const rawWords = cleanDesc.split(/\s+/).filter(w => w.length >= 3 && !stopWords.has(w));
+    const wordCounts = {};
+    rawWords.forEach(w => { wordCounts[w] = (wordCounts[w] || 0) + 1; });
+    const topWords = Object.keys(wordCounts).sort((a, b) => wordCounts[b] - wordCounts[a]).slice(0, 15);
+
+    // Extract descriptive 2-word phrases
+    const phrases = [];
+    for (let i = 0; i < rawWords.length - 1; i++) {
+      phrases.push(`${rawWords[i]} ${rawWords[i + 1]}`);
+    }
+    const topPhrases = Array.from(new Set(phrases)).slice(0, 8);
+
+    const baseKeywords = [
+      product.name,
+      `${product.name} Fantasy Luxe`,
+      product.category,
+      product.subCategory,
+      `${product.category} ${product.subCategory}`.trim(),
+      `luxury ${product.category?.toLowerCase() || 'fashion'}`,
+      `designer ${product.subCategory?.toLowerCase() || 'accessories'}`,
+      'Fantasy Luxe Nigeria',
+      'luxury fashion nigeria',
+      'authentic designer store',
+      ...topPhrases,
+      ...topWords
+    ].filter(Boolean);
+
+    return Array.from(new Set(baseKeywords)).join(', ');
+  };
+
   const generateProductSchema = () => {
     if (!productData) return null;
+
+    const keywords = getProductKeywords(productData);
 
     return {
       "@context": "https://schema.org",
       "@type": "Product",
       name: productData.name,
-      description: productData.description,
+      description: productData.seoDescription || productData.description,
+      keywords: keywords,
       image: productData.images,
       sku: productData._id,
       mpn: productData._id,
@@ -188,33 +238,45 @@ const Product = () => {
         return (
           <>
             <Helmet>
-              <title>{productData.name} | Fantasy Luxe - Premium Fashion</title>
+              {/* Dynamic Product SEO Title */}
+              <title>{productData.seoTitle || `${productData.name} | Fantasy Luxe - Luxury ${productData.category || 'Fashion'}`}</title>
+              <meta
+                name="title"
+                content={productData.seoTitle || `${productData.name} | Fantasy Luxe`}
+              />
+              {/* Dynamic Product SEO Description from product description */}
               <meta
                 name="description"
-                content={`${productData.description.substring(0, 155)}... Shop now at Fantasy Luxe for premium quality.`}
+                content={productData.seoDescription || `${productData.description.substring(0, 155)}... Shop authentic luxury at Fantasy Luxe with fast delivery across Nigeria.`}
               />
+              {/* Dynamic Product Keywords from description & attributes */}
               <meta
                 name="keywords"
-                content={`${productData.name}, ${productData.category}, ${productData.subCategory}, luxury fashion, Fantasy Luxe, buy online, premium quality`}
+                content={getProductKeywords(productData)}
               />
               <link
                 rel="canonical"
-                href={`https://fantasyluxe.com/products/${productData._id}`}
+                href={`https://fantasyluxe.store/products/${productData._id}`}
               />
 
+              {/* Open Graph Product Metadata with Image SEO */}
               <meta property="og:type" content="product" />
               <meta
                 property="og:title"
-                content={`${productData.name} | Fantasy Luxe`}
+                content={productData.seoTitle || `${productData.name} | Fantasy Luxe`}
               />
               <meta
                 property="og:description"
-                content={productData.description.substring(0, 200)}
+                content={productData.seoDescription || productData.description.substring(0, 200)}
               />
               <meta property="og:image" content={productData.images[0]} />
+              <meta property="og:image:secure_url" content={productData.images[0]} />
+              <meta property="og:image:alt" content={productData.name} />
+              <meta property="og:image:width" content="1000" />
+              <meta property="og:image:height" content="1000" />
               <meta
                 property="og:url"
-                content={`https://fantasyluxe.com/products/${productData._id}`}
+                content={`https://fantasyluxe.store/products/${productData._id}`}
               />
               <meta
                 property="product:price:amount"
@@ -222,16 +284,18 @@ const Product = () => {
               />
               <meta property="product:price:currency" content="NGN" />
 
-              <meta name="twitter:card" content="product" />
+              {/* Twitter Card with Large Image SEO */}
+              <meta name="twitter:card" content="summary_large_image" />
               <meta
                 name="twitter:title"
-                content={`${productData.name} | Fantasy Luxe`}
+                content={productData.seoTitle || `${productData.name} | Fantasy Luxe`}
               />
               <meta
                 name="twitter:description"
-                content={productData.description.substring(0, 200)}
+                content={productData.seoDescription || productData.description.substring(0, 200)}
               />
               <meta name="twitter:image" content={productData.images[0]} />
+              <meta name="twitter:image:alt" content={productData.name} />
 
               <script type="application/ld+json">
                 {JSON.stringify(generateProductSchema())}

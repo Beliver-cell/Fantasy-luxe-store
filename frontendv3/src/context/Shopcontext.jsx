@@ -255,7 +255,6 @@ export const ShopContextProvider = ({ children }) => {
     token,
     setToken,
     backendUrl,
-    deliveryInfo,
     getSettings,
   };
 

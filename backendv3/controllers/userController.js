@@ -2,7 +2,7 @@ import userModel from "../models/userModel.js";
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { generateOTP, sendVerificationOTP, sendResetPasswordOTP } from "../config/email.js";
+import { generateOTP, sendVerificationOTP, sendResetPasswordOTP, sendAdminResetPasswordOTP } from "../config/email.js";
 import ENV from "../config/serverConfig.js";
 
 const createToken = (id, role = 'user') => {
@@ -308,6 +308,137 @@ const loginAdmin = async (req, res) => {
     }
 };
 
+// Route for admin forgot password
+const forgotPasswordAdmin = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email || !validator.isEmail(email)) {
+            return res.json({ success: false, message: "Please provide a valid email address" });
+        }
+
+        const admin = await userModel.findOne({ email: email.toLowerCase().trim(), role: 'admin' });
+        if (!admin) {
+            return res.json({ success: false, message: "Admin account not found with this email" });
+        }
+
+        const resetOTP = generateOTP();
+        admin.resetPasswordOTP = resetOTP;
+        admin.resetPasswordOTPExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+        await admin.save();
+
+        const emailSent = await sendAdminResetPasswordOTP(admin.email, resetOTP);
+
+        if (emailSent) {
+            return res.json({
+                success: true,
+                userId: admin._id,
+                email: admin.email,
+                message: "Admin password reset code sent to your email"
+            });
+        } else {
+            return res.json({ success: false, message: "Failed to send reset email. Please try again." });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+// Route for resending admin reset OTP
+const resendAdminResetOTP = async (req, res) => {
+    try {
+        const { userId, email } = req.body;
+
+        let query = { role: 'admin' };
+        if (userId) {
+            query._id = userId;
+        } else if (email) {
+            query.email = email.toLowerCase().trim();
+        } else {
+            return res.json({ success: false, message: "User ID or Email is required" });
+        }
+
+        const admin = await userModel.findOne(query);
+        if (!admin) {
+            return res.json({ success: false, message: "Admin account not found" });
+        }
+
+        const resetOTP = generateOTP();
+        admin.resetPasswordOTP = resetOTP;
+        admin.resetPasswordOTPExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+        await admin.save();
+
+        const emailSent = await sendAdminResetPasswordOTP(admin.email, resetOTP);
+
+        if (emailSent) {
+            return res.json({
+                success: true,
+                userId: admin._id,
+                email: admin.email,
+                message: "New password reset code sent to your email"
+            });
+        } else {
+            return res.json({ success: false, message: "Failed to send reset email" });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+// Route for admin reset password with OTP
+const resetPasswordAdmin = async (req, res) => {
+    try {
+        const { userId, email, otp, newPassword } = req.body;
+
+        if ((!userId && !email) || !otp || !newPassword) {
+            return res.json({ success: false, message: "All fields are required" });
+        }
+
+        if (newPassword.length < 8) {
+            return res.json({ success: false, message: "Password must be at least 8 characters long" });
+        }
+
+        let query = { role: 'admin' };
+        if (userId) {
+            query._id = userId;
+        } else if (email) {
+            query.email = email.toLowerCase().trim();
+        }
+
+        const admin = await userModel.findOne(query);
+        if (!admin) {
+            return res.json({ success: false, message: "Admin account not found" });
+        }
+
+        if (!admin.resetPasswordOTP || admin.resetPasswordOTP !== otp.toString().trim()) {
+            return res.json({ success: false, message: "Invalid verification code" });
+        }
+
+        if (!admin.resetPasswordOTPExpire || new Date() > admin.resetPasswordOTPExpire) {
+            return res.json({ success: false, message: "Verification code has expired. Please request a new one." });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        admin.password = hashedPassword;
+        admin.resetPasswordOTP = null;
+        admin.resetPasswordOTPExpire = null;
+        admin.isVerified = true;
+        await admin.save();
+
+        const token = createToken(admin._id, 'admin');
+
+        return res.json({
+            success: true,
+            token,
+            message: "Password reset successfully! Logged in to Admin portal."
+        });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
 // Get user profile
 const getUserProfile = async (req, res) => {
     try {
@@ -366,4 +497,18 @@ const updateUserProfile = async (req, res) => {
     }
 };
 
-export { loginUser, registerUser, verifyEmail, resendVerificationOTP, forgotPassword, resetPassword, registerAdmin, loginAdmin, getUserProfile, updateUserProfile };
+export { 
+    loginUser, 
+    registerUser, 
+    verifyEmail, 
+    resendVerificationOTP, 
+    forgotPassword, 
+    resetPassword, 
+    registerAdmin, 
+    loginAdmin, 
+    forgotPasswordAdmin,
+    resetPasswordAdmin,
+    resendAdminResetOTP,
+    getUserProfile, 
+    updateUserProfile 
+};
